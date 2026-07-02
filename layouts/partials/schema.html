@@ -59,7 +59,7 @@
     {{ else }}
     {{ with .Params.tags }}"keywords": {{ . }},{{ end }}
     {{ end }}
-    "mainEntityOfPage": "true",
+    "mainEntityOfPage": {{ .Permalink }},
     "wordCount": "{{ .WordCount }}"
   }{{ if site.Params.enableStructuredBreadcrumbs | default false }},
   {
