@@ -1083,5 +1083,17 @@
       "Blog",
       "Photography"
     ]
+  },
+  {
+    "title": "fionnlinux.com",
+    "url": "https://fionnlinux.com",
+    "source": "https://github.com/fionnlinux/fionnlinux.com",
+    "tags": [
+      "Personal site",
+      "Blog",
+      "Linux",
+      "Open Source"
+    ]
   }
 ]
+
