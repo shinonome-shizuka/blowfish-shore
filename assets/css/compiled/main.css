@@ -4786,8 +4786,20 @@ pre {
       width: 8px;
       height: 8px;
     }
+    scrollbar-width: thin;
+    --tw-scrollbar-thumb: rgba(var(--color-neutral-400), 1);
+    --tw-scrollbar-track: rgba(var(--color-neutral-200), 1);
+    scrollbar-color: var(--tw-scrollbar-thumb) var(--tw-scrollbar-track);
     --scrollbar-thumb: oklch(70.8% 0 0);
     --scrollbar-track: oklch(92.2% 0 0);
+    &:is(.dark *) {
+      --tw-scrollbar-thumb: rgba(var(--color-neutral-600), 1);
+      scrollbar-color: var(--tw-scrollbar-thumb) var(--tw-scrollbar-track);
+    }
+    &:is(.dark *) {
+      --tw-scrollbar-track: rgba(var(--color-neutral-800), 1);
+      scrollbar-color: var(--tw-scrollbar-thumb) var(--tw-scrollbar-track);
+    }
     &:is(.dark *) {
       --scrollbar-thumb: oklch(43.9% 0 0);
     }
@@ -5307,6 +5319,16 @@ body:has(#mobile-menu-toggle:checked) {
   initial-value: "";
   inherits: false;
 }
+@property --tw-scrollbar-thumb {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-scrollbar-track {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
 @keyframes pulse {
   50% {
     opacity: 0.5;
@@ -5389,6 +5411,8 @@ body:has(#mobile-menu-toggle:checked) {
       --tw-duration: initial;
       --tw-ease: initial;
       --tw-content: "";
+      --tw-scrollbar-thumb: #0000;
+      --tw-scrollbar-track: #0000;
     }
   }
 }

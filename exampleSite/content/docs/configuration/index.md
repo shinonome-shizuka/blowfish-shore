@@ -116,8 +116,8 @@ The default file can be used as a template to create additional languages, or re
 <!-- prettier-ignore-start -->
 | Name | Default | Description |
 | --- | --- | --- |
-| `languageCode` | `"en"` | The Hugo language code for this file. It can be a top-level language (ie. `en`) or a sub-variant (ie. `en-au`) and should match the language code in the filename. Hugo expects this value to always be in lowercase. For proper HTML compliance, set the `isoCode` parameter which is case-sensitive. |
-| `languageName` | `"English"` | The name of the language. |
+| `locale` | `"en"` | The Hugo language code for this file. It can be a top-level language (ie. `en`) or a sub-variant (ie. `en-au`) and should match the language code in the filename. Hugo expects this value to always be in lowercase. For proper HTML compliance, set the `isoCode` parameter which is case-sensitive. |
+| `label` | `"English"` | The name of the language. |
 | `weight` | `1` | The weight determines the order of languages when building multilingual sites. |
 | `title` | `"Blowfish"` | The title of the website. This will be displayed in the site header and footer. |
 <!-- prettier-ignore-end -->
