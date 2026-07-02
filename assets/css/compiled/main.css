@@ -1012,29 +1012,6 @@
   .box-content {
     box-sizing: content-box;
   }
-  .scrollbar {
-    &::-webkit-scrollbar-track {
-      background-color: var(--scrollbar-track);
-      border-radius: var(--scrollbar-track-radius);
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: var(--scrollbar-thumb);
-      border-radius: var(--scrollbar-thumb-radius);
-    }
-    &::-webkit-scrollbar-corner {
-      background-color: var(--scrollbar-corner);
-      border-radius: var(--scrollbar-corner-radius);
-    }
-    @supports (-moz-appearance:none) {
-      scrollbar-width: auto;
-      scrollbar-color: var(--scrollbar-thumb, initial) var(--scrollbar-track, initial);
-    }
-    &::-webkit-scrollbar {
-      display: block;
-      width: var(--scrollbar-width, 16px);
-      height: var(--scrollbar-height, 16px);
-    }
-  }
   .line-clamp-3 {
     overflow: hidden;
     display: -webkit-box;
@@ -4831,6 +4808,14 @@ pre {
     }
   }
 }
+@layer base {
+  * {
+    @supports (-moz-appearance:none) {
+      scrollbar-color: initial;
+      scrollbar-width: initial;
+    }
+  }
+}
 body:has(#mobile-menu-toggle:checked) {
   overflow: hidden;
 }
@@ -5009,14 +4994,6 @@ body:has(#mobile-menu-toggle:checked) {
   input:where([type='file']):focus {
     outline: 1px solid ButtonText;
     outline: 1px auto -webkit-focus-ring-color;
-  }
-}
-@layer base {
-  * {
-    @supports (-moz-appearance:none) {
-      scrollbar-color: initial;
-      scrollbar-width: initial;
-    }
   }
 }
 @property --tw-translate-x {
