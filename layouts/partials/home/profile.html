@@ -1,47 +1,53 @@
-{{ $disableImageOptimization := .Site.Params.disableImageOptimization | default false }}
-<article
-  class="{{ if not .Site.Params.homepage.showRecent }}
-    h-full
-  {{ end }} flex flex-col items-center justify-center text-center">
-  <header class="relative px-1 py-1 flex flex-col items-center mb-3">
-    {{ with .Site.Params.Author.image }}
-      {{ $authorImage := "" }}
-      {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
-        {{ $authorImage = resources.GetRemote . }}
-      {{ else }}
-        {{ $authorImage = resources.Get . }}
-      {{ end }}
-      {{ if $authorImage }}
-        {{ $final := $authorImage }}
-        {{ $squareImage := $authorImage }}
-        {{ if not (or $disableImageOptimization (eq $authorImage.MediaType.SubType "svg")) }}
-          {{ $final = $authorImage.Fill (print "288x288 q" ( $.Site.Params.Author.imagequality | default "96" )) }}
-          {{ $shortSide := int (math.Min $authorImage.Width $authorImage.Height) }}
-          {{ $squareImage = $authorImage.Crop (printf "%dx%d" $shortSide $shortSide ) }}
-        {{ end }}
-        <img
-          class="mb-2 h-36 w-36 rounded-full"
-          width="144"
-          height="144"
-          alt="{{ $.Site.Params.Author.name | default `Author` }}"
-          src="{{ $final.RelPermalink }}"
-          data-zoom-src="{{ $squareImage.RelPermalink }}">
-      {{ end }}
-    {{ end }}
-    <h1 class="text-4xl font-extrabold">
-      {{ .Site.Params.Author.name | default .Site.Title }}
+{{/*
+  longbeach-shore · home/profile.html (Manifesto · dusk override)
+  ────────────────────────────────────────────────────────────────
+  Hallmark · macrostructure: Manifesto · theme: shore · entrance · mood: dusk
+  Axis diff vs single (Long Document): display-weight +/+, rhythm dense→sparse,
+  section density high→low. Nav N7 · Footer Ft5. Token references only —
+  zero inline OKLCH / hex.
+*/}}
+
+<article class="entrance-hero flex flex-col justify-end min-h-[78vh] py-12">
+  <div class="entrance-hero__rail" aria-hidden="true">
+    <span class="entrance-hero__index">00</span>
+    <span class="entrance-hero__index-sep">/</span>
+    <span class="entrance-hero__index-cap">BACKYARD</span>
+  </div>
+
+  <div class="entrance-hero__title-row">
+    <h1 class="entrance-hero__title">
+      {{ .Site.Params.Author.name | default .Site.Title | markdownify }}
     </h1>
-    {{ with .Site.Params.Author.headline }}
-      <h2 class="text-xl text-neutral-500 dark:text-neutral-400">
-        {{ . | markdownify }}
-      </h2>
-    {{ end }}
-    <div class="mt-1 text-2xl">
+    <div class="entrance-hero__socials">
+      <span class="entrance-hero__socials-name">@東雲閑</span>
+    </div>
+  </div>
+
+  {{ with .Site.Params.Author.headline }}
+    <div class="entrance-hero__verse-wrap" aria-hidden="true">
+      {{/* 默认显示这句；若 JS 跑通会从诗池随机选一句盖掉。
+          短句好放进左缘 128px 旋转竖排 */}}
+      <p class="entrance-hero__verse" data-final="无上清凉花满席。">{{ . | markdownify }}</p>
+    </div>
+  {{ end }}
+
+  <div class="entrance-hero__cta-row">
+    <a href="{{ "posts/" | relLangURL }}" class="entrance-hero__cta">
+      <span class="entrance-hero__cta-label">去看文章</span>
+      <span class="entrance-hero__cta-arrow" aria-hidden="true">→</span>
+    </a>
+    <div class="entrance-hero__cta-socials">
       {{ partialCached "author-links.html" . }}
     </div>
-  </header>
-  <section class="prose dark:prose-invert w-full">{{ .Content }}</section>
+  </div>
 </article>
-<section>
+
+{{ with .Content }}
+  <section class="entrance-prose prose dark:prose-invert mt-12">{{ . }}</section>
+{{ end }}
+
+<section class="entrance-recent">
   {{ partial "recent-articles/main.html" . }}
 </section>
+
+{{ partial "home/podcast.html" . }}

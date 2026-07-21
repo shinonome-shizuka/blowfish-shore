@@ -1,0 +1,172 @@
+{{/*
+  longbeach-shore · DotField 雾气（移植自 reactbits.dev DotField）
+  ────────────────────────────────
+  Canvas 网格点阵，鼠标附近点向外 bulge，鼠标静止后点缓动回原位。
+  颜色用扎染蓝（Persona 3 Reload #0900a7 → #00d4ff），不抄原版紫色。
+*/}}
+<div class="grid-mist" aria-hidden="true">
+  <div class="grid-mist__inner">
+    <canvas class="grid-mist__canvas"></canvas>
+    <svg class="grid-mist__svg" aria-hidden="true">
+      <defs>
+        <radialGradient id="dotFieldGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(9, 0, 167, 0.12)"/>
+          <stop offset="35%" stop-color="rgba(9, 0, 167, 0.07)"/>
+          <stop offset="70%" stop-color="rgba(9, 0, 167, 0.03)"/>
+          <stop offset="100%" stop-color="rgba(9, 0, 167, 0)"/>
+        </radialGradient>
+      </defs>
+      <circle class="grid-mist__glow" cx="-9999" cy="-9999" r="260" fill="url(#dotFieldGlow)"/>
+    </svg>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  const TWO_PI = Math.PI * 2;
+
+  const GRAD_FROM = "rgba(9, 0, 167, 0.32)";
+  const GRAD_TO = "rgba(0, 212, 255, 0.22)";
+
+  const DOT_RADIUS = 1.5;
+  const DOT_SPACING = 14;
+  const CURSOR_RADIUS = 500;
+  const BULGE_STRENGTH = 67;
+
+  const canvas = document.querySelector(".grid-mist__canvas");
+  const glow = document.querySelector(".grid-mist__glow");
+  if (!canvas || !glow) return;
+
+  const ctx = canvas.getContext("2d", { alpha: true });
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let dots = [];
+  let size = { w: 0, h: 0, offsetX: 0, offsetY: 0 };
+  let raf = 0;
+
+  const mouse = { x: -9999, y: -9999, prevX: -9999, prevY: -9999, speed: 0 };
+  const engagement = { val: 0 };
+  const glowOpacity = { val: 0 };
+
+  function buildDots(w, h) {
+    const step = DOT_RADIUS + DOT_SPACING;
+    const cols = Math.floor(w / step);
+    const rows = Math.floor(h / step);
+    const padX = (w % step) / 2;
+    const padY = (h % step) / 2;
+    dots = new Array(rows * cols);
+    let idx = 0;
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const ax = padX + col * step + step / 2;
+        const ay = padY + row * step + step / 2;
+        dots[idx++] = { ax, ay, sx: ax, sy: ay };
+      }
+    }
+  }
+
+  function resize() {
+    const parent = canvas.parentElement;
+    const rect = parent.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    size = { w, h, offsetX: rect.left + window.scrollX, offsetY: rect.top + window.scrollY };
+    buildDots(w, h);
+  }
+
+  let resizeTimer;
+  function onResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resize, 100);
+  }
+
+  function onMouseMove(e) {
+    mouse.x = e.pageX - size.offsetX;
+    mouse.y = e.pageY - size.offsetY;
+  }
+
+  function updateMouseSpeed() {
+    const dx = mouse.prevX - mouse.x;
+    const dy = mouse.prevY - mouse.y;
+    mouse.speed += (Math.sqrt(dx * dx + dy * dy) - mouse.speed) * 0.5;
+    if (mouse.speed < 0.001) mouse.speed = 0;
+    mouse.prevX = mouse.x;
+    mouse.prevY = mouse.y;
+  }
+
+  function tick() {
+    const m = mouse;
+    const { w, h } = size;
+    const len = dots.length;
+
+    const targetEng = Math.min(m.speed / 5, 1);
+    engagement.val += (targetEng - engagement.val) * 0.06;
+    if (engagement.val < 0.001) engagement.val = 0;
+    const eng = engagement.val;
+
+    glowOpacity.val += (eng - glowOpacity.val) * 0.08;
+
+    glow.setAttribute("cx", m.x);
+    glow.setAttribute("cy", m.y);
+    glow.style.opacity = glowOpacity.val.toFixed(3);
+
+    ctx.clearRect(0, 0, w, h);
+
+    const grad = ctx.createLinearGradient(0, 0, w, h);
+    grad.addColorStop(0, GRAD_FROM);
+    grad.addColorStop(1, GRAD_TO);
+    ctx.fillStyle = grad;
+
+    const cr = CURSOR_RADIUS;
+    const crSq = cr * cr;
+    const rad = DOT_RADIUS / 2;
+
+    ctx.beginPath();
+    for (let i = 0; i < len; i++) {
+      const d = dots[i];
+      const dx = m.x - d.ax;
+      const dy = m.y - d.ay;
+      const distSq = dx * dx + dy * dy;
+
+      if (distSq < crSq && eng > 0.01) {
+        const dist = Math.sqrt(distSq);
+        const t = 1 - dist / cr;
+        const push = t * t * BULGE_STRENGTH * eng;
+        const angle = Math.atan2(dy, dx);
+        d.sx += (d.ax - Math.cos(angle) * push - d.sx) * 0.15;
+        d.sy += (d.ay - Math.sin(angle) * push - d.sy) * 0.15;
+      } else {
+        d.sx += (d.ax - d.sx) * 0.1;
+        d.sy += (d.ay - d.sy) * 0.1;
+      }
+
+      ctx.moveTo(d.sx + rad, d.sy);
+      ctx.arc(d.sx, d.sy, rad, 0, TWO_PI);
+    }
+    ctx.fill();
+
+    raf = requestAnimationFrame(tick);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      resize();
+      setInterval(updateMouseSpeed, 20);
+      window.addEventListener("resize", onResize);
+      window.addEventListener("mousemove", onMouseMove, { passive: true });
+      raf = requestAnimationFrame(tick);
+    }, { once: true });
+  } else {
+    resize();
+    setInterval(updateMouseSpeed, 20);
+    window.addEventListener("resize", onResize);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    raf = requestAnimationFrame(tick);
+  }
+})();
+</script>

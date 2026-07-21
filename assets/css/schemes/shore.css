@@ -1,0 +1,55 @@
+/* ==========================================================================
+ * longbeach-shore 调色板
+ * ==========================================================================
+ * 6 色：
+ *   - 主色 #0900A7 扎染蓝
+ *   - 撞色 #00D4FF P3 电光蓝
+ *   - 浅色 #F5F2EA 象牙白（--color-neutral 基色）
+ *   - 深色 #1F1A2E 蓝紫深灰（≈ neutral-800，深模式背景由 dark:bg-neutral-800 取得）
+ *   - 警示 #F04E8A cowlevel 玫红
+ *   - 提示 #B7FE4C 荧光绿
+ *
+ * 注意：色值必须是逗号分隔 —— tailwind.config.js 使用 rgba(var(--color-x), alpha)。
+ * 深色模式不写 .dark 变量块：blowfish 的 dark: class 直接引用同一色阶的高位步。
+ * ========================================================================== */
+
+:root {
+  /* 基色：象牙白（浅模式页面背景）*/
+  --color-neutral: 245, 242, 234;
+  /* 中性色（象牙白→蓝紫深灰渐变，H=250 S=25）*/
+  --color-neutral-50: 243, 242, 247;
+  --color-neutral-100: 231, 230, 240;
+  --color-neutral-200: 213, 210, 228;
+  --color-neutral-300: 190, 185, 213;
+  --color-neutral-400: 154, 147, 190;
+  --color-neutral-500: 106, 96, 159;
+  --color-neutral-600: 81, 73, 121;
+  --color-neutral-700: 55, 50, 83;
+  --color-neutral-800: 30, 27, 45;
+  --color-neutral-900: 25, 23, 38;
+  /* 主色：扎染蓝 #0900A7 */
+  --color-primary-50: 231, 229, 255;
+  --color-primary-100: 207, 204, 255;
+  --color-primary-200: 158, 153, 255;
+  --color-primary-300: 110, 102, 255;
+  --color-primary-400: 62, 51, 255;
+  --color-primary-500: 9, 0, 167;
+  --color-primary-600: 9, 0, 167;
+  --color-primary-700: 6, 0, 116;
+  --color-primary-800: 4, 0, 75;
+  --color-primary-900: 2, 0, 39;
+  /* 撞色：P3 电光蓝 #00D4FF */
+  --color-secondary-50: 229, 251, 255;
+  --color-secondary-100: 204, 246, 255;
+  --color-secondary-200: 153, 238, 255;
+  --color-secondary-300: 102, 229, 255;
+  --color-secondary-400: 51, 221, 255;
+  --color-secondary-500: 0, 212, 255;
+  --color-secondary-600: 0, 212, 255;
+  --color-secondary-700: 0, 170, 204;
+  --color-secondary-800: 0, 136, 163;
+  --color-secondary-900: 0, 106, 128;
+  /* 状态色（不进 Tailwind 色阶，配合 rgba(var(--color-warning), 1) 使用）*/
+  --color-warning: 240, 78, 138;        /* #F04E8A cowlevel 玫红 */
+  --color-success: 183, 254, 76;        /* #B7FE4C 荧光绿 L=65% */
+}

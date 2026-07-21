@@ -58,16 +58,20 @@
 {{ end }}
 
 
+{{ $title := or $page.Params.shortTitle .Title }}
 <article
-  class="article-link--card relative min-h-full min-w-full overflow-hidden rounded-lg border border-neutral-300 dark:border-neutral-600">
+  class="article-link--card relative flex flex-col min-h-full min-w-full overflow-hidden rounded-lg border border-neutral-300 dark:border-neutral-600">
   {{ with $featuredURL }}
-    <div class="flex-none relative overflow-hidden thumbnail_card" style="--thumbnail-aspect-ratio: {{ $thumbnailAspectRatio }}">
+    <div class="flex-none relative overflow-hidden thumbnail_card">
       <img
         src="{{ . }}"
         role="presentation"
         loading="lazy"
         decoding="async"
         class="not-prose absolute inset-0 w-full h-full object-cover">
+      {{ with $page.Params.categories }}
+        <span class="entrance-cat-badge">{{ index . 0 }}</span>
+      {{ end }}
     </div>
   {{ end }}
   {{ if and .Draft .Site.Params.article.showDraftLabel }}
@@ -75,7 +79,7 @@
       {{ partial "badge.html" (i18n "article.draft" | emojify) }}
     </span>
   {{ end }}
-  <div class="p-4">
+  <div class="flex flex-col flex-1 p-4">
     <header>
       <a
         {{ with $page.Params.externalUrl }}
@@ -85,7 +89,7 @@
         {{ end }}
         class="not-prose before:absolute before:inset-0 decoration-primary-500 dark:text-neutral text-xl font-bold text-neutral-800 hover:underline hover:underline-offset-2">
         <h2>
-          {{ .Title | emojify }}
+          {{ $title | emojify }}
           {{ if .Params.externalUrl }}
             <span class="cursor-default align-top text-xs text-neutral-400 dark:text-neutral-500">
               <span class="rtl:hidden">&#8599;</span>
@@ -95,14 +99,18 @@
         </h2>
       </a>
     </header>
-    <div class="text-sm text-neutral-500 dark:text-neutral-400">
-      {{ partial "article-meta/basic.html" . }}
+    <div class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+      {{ partial "meta/date.html" $page.Date }}
     </div>
     {{ if .Params.showSummary | default (.Site.Params.list.showSummary | default false) }}
-      <div class="article-link__summary prose dark:prose-invert mt-1 line-clamp-5">
+      <div class="article-link__summary prose dark:prose-invert mt-1 line-clamp-5 w-full max-w-none">
         {{ .Summary | plainify }}
       </div>
     {{ end }}
+    {{ with $page.Params.associated }}
+      <div class="mt-auto pt-4 flex flex-row flex-wrap items-center">
+        <span class="entrance-assoc-badge">{{ . }}</span>
+      </div>
+    {{ end }}
   </div>
-  <div class="px-6 pt-4 pb-2"></div>
 </article>
