@@ -164,20 +164,23 @@ code, pre, kbd, samp {
   color: rgb(var(--color-neutral-500)) !important;
 }
 
-/* "最新文章"段头：tight tracking + 扎染蓝 whisper 底线 */
+/* "最新文章"段头：tight tracking · 无 border */
 section > h2.text-2xl {
   font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: -0.025em;
   color: rgb(var(--color-neutral-900));
-  margin-top: 3.5rem !important;
-  margin-bottom: 2rem !important;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(var(--color-primary-500), 0.2);
+  margin-top: 3.5rem;
+  margin-bottom: 2rem;
+}
+/* timeline 年份 · 与上方 article 间距大，与下方 article 间距小 */
+section > h2.article-timeline__year {
+  margin-top: 3.5rem;
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
 }
 .dark section > h2.text-2xl {
   color: rgb(var(--color-neutral-100));
-  border-bottom-color: rgba(var(--color-primary-400), 0.25);
 }
 
 /* intro prose 段落 */
@@ -198,7 +201,7 @@ body {
 
 /* 蒸汽波 3D 透视网格 · 上下双层 · 扎染蓝 · 向深处滚动 */
 
-/* 底层 · 地平面网格 · 50px tile · 80px 也用 50px 解决跳动 */
+/* 底层 · 地平面网格 · 仅首页显示，其他页隐藏 */
 body::after {
   content: "";
   position: fixed;
@@ -209,6 +212,11 @@ body::after {
   height: 70vh;
   z-index: -1;
   pointer-events: none;
+}
+/* 非首页：下层网格不显示 */
+body[data-kind]:not([data-kind="home"])::after {
+  display: none;
+}
   background-image:
     /* 远端辉光 · 顶部 radial 光晕替代 subpixel 抖动 */
     radial-gradient(ellipse 80% 60% at 50% 0%, rgba(var(--color-primary-500), 0.45) 0%, rgba(var(--color-primary-500), 0.22) 30%, transparent 65%),
@@ -1134,6 +1142,173 @@ article .prose li {
 }
 .dark #single_header h1 {
   color: rgb(var(--color-neutral));
+}
+
+/* 时间轴样式 · article-link--timeline */
+.article-link--timeline {
+  --timeline-color: rgb(var(--color-primary-500));
+  --timeline-glow: rgba(var(--color-primary-500), 0.4);
+  --timeline-halo: rgba(var(--color-primary-500), 0.12);
+  position: relative;
+  max-width: 100%;
+  padding-left: 4.5rem;
+  padding-bottom: 2.5rem;
+}
+.article-link--timeline:last-child {
+  padding-bottom: 0;
+}
+.article-link--timeline__dot {
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--timeline-color);
+  box-shadow:
+    0 0 0 4px var(--timeline-halo),
+    0 0 12px var(--timeline-glow);
+}
+.article-link--timeline__date-block {
+  position: absolute;
+  left: 1.5rem;
+  top: 0.4rem;
+  width: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.25rem;
+}
+.article-link--timeline__date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--timeline-color);
+  opacity: 0.85;
+  line-height: 1;
+}
+.article-link--timeline__cat {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--timeline-color);
+  border: 1px solid var(--timeline-color);
+  border-radius: 0.25rem;
+  opacity: 0.7;
+  line-height: 1.4;
+  transition: opacity 150ms ease-out, background-color 150ms ease-out;
+  white-space: nowrap;
+  max-width: 5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.article-link--timeline__cat:hover {
+  opacity: 1;
+  background-color: var(--timeline-color);
+  color: rgb(var(--color-neutral));
+}
+.article-link--timeline__line {
+  position: absolute;
+  left: 5px;
+  top: 1.6rem;
+  bottom: -2.5rem;
+  width: 2px;
+  background: var(--timeline-color);
+  pointer-events: none;
+}
+.article-link--timeline:last-child .article-link--timeline__line {
+  bottom: 0;
+}
+.dark .article-link--timeline {
+  --timeline-color: rgb(var(--color-primary-400));
+  --timeline-glow: rgba(var(--color-primary-400), 0.45);
+  --timeline-halo: rgba(var(--color-primary-400), 0.18);
+}
+.article-link--timeline__content {
+  margin: 0;
+}
+.article-link--timeline__content header {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding-top: 0.55rem;
+}
+.article-link--timeline__content h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.8vw, 1.75rem);
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+}
+.article-link--timeline__content p,
+.article-link--timeline__content img,
+.article-link--timeline__content div {
+  margin-left: 0;
+  margin-right: 0;
+}
+.article-link--timeline__content div {
+  margin-left: 0;
+  margin-right: 0;
+}
+.article-link--timeline__cover-wrap {
+  max-height: 12rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+.article-link--timeline__cover {
+  display: block;
+  max-height: 12rem;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  transition: transform 200ms ease-out;
+}
+.article-link--timeline__cover-wrap:hover .article-link--timeline__cover {
+  transform: scale(1.02);
+}
+.article-link__summary {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgb(var(--color-neutral-600));
+}
+.dark .article-link__summary {
+  color: rgb(var(--color-neutral-300));
+}
+.article-link--timeline__stats {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(var(--color-neutral-300), 0.4);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: rgb(var(--color-neutral-500));
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.dark .article-link--timeline__stats {
+  border-top-color: rgba(var(--color-neutral-600), 0.5);
+  color: rgb(var(--color-neutral-400));
+}
+.article-link--timeline__stats .inline-flex {
+  opacity: 0.85;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.article-link--timeline__sep {
+  opacity: 0.5;
+  margin: 0 0.35rem;
+  font-weight: 400;
 }
 
 /* site-footer 居中 */

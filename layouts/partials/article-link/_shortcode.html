@@ -38,7 +38,11 @@
   {{/* frontmatter */}}
   {{ with $page }}
     {{ $p := . }}
-    {{ with .Params.featureimage }}
+    {{/* frontmatter · 优先 cover 字段 */}}
+    {{ $imageField := "" }}
+    {{ with .Params.cover }}{{ $imageField = . }}{{ end }}
+    {{ if not $imageField }}{{ with .Params.featureimage }}{{ $imageField = . }}{{ end }}{{ end }}
+    {{ with $imageField }}
       {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
         {{ if site.Params.hotlinkFeatureImage }}
           {{ $featuredURL = . }}

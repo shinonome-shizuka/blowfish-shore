@@ -12,16 +12,20 @@
 {{/* frontmatter */}}
 {{ with $page }}
   {{ $p := . }}
-  {{ with .Params.featureimage }}
-    {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
-      {{ if site.Params.hotlinkFeatureImage }}
-        {{ $featuredURL = . }}
+  {{/* frontmatter · 优先 cover 字段 */}}
+    {{ $imageField := "" }}
+    {{ with .Params.cover }}{{ $imageField = . }}{{ end }}
+    {{ if not $imageField }}{{ with .Params.featureimage }}{{ $imageField = . }}{{ end }}{{ end }}
+    {{ with $imageField }}
+      {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
+        {{ if site.Params.hotlinkFeatureImage }}
+          {{ $featuredURL = . }}
+        {{ else }}
+          {{ $featured = resources.GetRemote . }}
+        {{ end }}
       {{ else }}
-        {{ $featured = resources.GetRemote . }}
+        {{ $featured = $p.Resources.Get . }}
       {{ end }}
-    {{ else }}
-      {{ $featured = $p.Resources.Get . }}
-    {{ end }}
   {{ end }}
 
   {{/* page resources */}}

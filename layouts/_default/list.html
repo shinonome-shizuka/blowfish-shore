@@ -48,9 +48,31 @@
     {{ $cardViewScreenWidth := .Params.cardViewScreenWidth | default (site.Params.list.cardViewScreenWidth | default false) }}
     {{ $groupByYear := .Params.groupByYear | default (site.Params.list.groupByYear | default false) }}
     {{ $orderByWeight := .Params.orderByWeight | default (site.Params.list.orderByWeight | default false) }}
+    {{ $view := .Params.view | default (site.Params.list.view | default "default") }}
     {{ $groupByYear := and (not $orderByWeight) $groupByYear }}
 
-    {{ if not $cardView }}
+    <!-- VIEW_DEBUG={{ $view }} -->
+    {{/* view: timeline */}}
+    {{ if eq $view "timeline" }}
+      <section class="article-timeline w-full">
+        {{ if not $orderByWeight }}
+          {{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}
+            {{ if $groupByYear }}
+              <h2 class="article-timeline__year mt-12 text-2xl font-bold text-neutral-700 first:mt-8 dark:text-neutral-300">
+                {{ .Key }}
+              </h2>
+            {{ end }}
+            {{ range .Pages }}
+              {{ partial "article-link/timeline.html" . }}
+            {{ end }}
+          {{ end }}
+        {{ else }}
+          {{ range (.Paginate (.Pages.ByWeight)).Pages }}
+            {{ partial "article-link/timeline.html" . }}
+          {{ end }}
+        {{ end }}
+      </section>
+    {{ else if not $cardView }}
       <section class="space-y-10 w-full">
         {{ if not $orderByWeight }}
           {{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}
