@@ -10,10 +10,10 @@
     <svg class="grid-mist__svg" aria-hidden="true">
       <defs>
         <radialGradient id="dotFieldGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="rgba(9, 0, 167, 0.12)"/>
-          <stop offset="35%" stop-color="rgba(9, 0, 167, 0.07)"/>
-          <stop offset="70%" stop-color="rgba(9, 0, 167, 0.03)"/>
-          <stop offset="100%" stop-color="rgba(9, 0, 167, 0)"/>
+          <stop class="glow-stop-0" offset="0%"/>
+          <stop class="glow-stop-35" offset="35%"/>
+          <stop class="glow-stop-70" offset="70%"/>
+          <stop class="glow-stop-100" offset="100%"/>
         </radialGradient>
       </defs>
       <circle class="grid-mist__glow" cx="-9999" cy="-9999" r="260" fill="url(#dotFieldGlow)"/>
@@ -26,8 +26,32 @@
   "use strict";
   const TWO_PI = Math.PI * 2;
 
-  const GRAD_FROM = "rgba(9, 0, 167, 0.32)";
-  const GRAD_TO = "rgba(0, 212, 255, 0.22)";
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  let DARK = mq.matches;
+
+  const COLORS = {
+    dark:  { from: "rgba(245, 230, 200, 0.32)", to: "rgba(245, 230, 200, 0.22)", glow: "rgba(245, 230, 200," },
+    light: { from: "rgba(9, 0, 167, 0.32)",     to: "rgba(0, 212, 255, 0.22)",   glow: "rgba(9, 0, 167," },
+  };
+
+  function applyColors() {
+    const c = COLORS[DARK ? "dark" : "light"];
+    gradFrom = c.from;
+    gradTo = c.to;
+    const stops = document.querySelectorAll("#dotFieldGlow stop");
+    if (stops.length === 4) {
+      stops[0].setAttribute("stop-color", c.glow + " 0.12)");
+      stops[1].setAttribute("stop-color", c.glow + " 0.07)");
+      stops[2].setAttribute("stop-color", c.glow + " 0.03)");
+      stops[3].setAttribute("stop-color", c.glow + " 0)");
+    }
+  }
+
+  let gradFrom = COLORS[DARK ? "dark" : "light"].from;
+  let gradTo = COLORS[DARK ? "dark" : "light"].to;
+
+  applyColors();
+  mq.addEventListener("change", (e) => { DARK = e.matches; applyColors(); });
 
   const DOT_RADIUS = 1.5;
   const DOT_SPACING = 14;
@@ -118,8 +142,8 @@
     ctx.clearRect(0, 0, w, h);
 
     const grad = ctx.createLinearGradient(0, 0, w, h);
-    grad.addColorStop(0, GRAD_FROM);
-    grad.addColorStop(1, GRAD_TO);
+    grad.addColorStop(0, gradFrom);
+    grad.addColorStop(1, gradTo);
     ctx.fillStyle = grad;
 
     const cr = CURSOR_RADIUS;

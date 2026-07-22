@@ -212,11 +212,6 @@ body::after {
   height: 70vh;
   z-index: -1;
   pointer-events: none;
-}
-/* 非首页：下层网格不显示 */
-body[data-kind]:not([data-kind="home"])::after {
-  display: none;
-}
   background-image:
     /* 远端辉光 · 顶部 radial 光晕替代 subpixel 抖动 */
     radial-gradient(ellipse 80% 60% at 50% 0%, rgba(var(--color-primary-500), 0.45) 0%, rgba(var(--color-primary-500), 0.22) 30%, transparent 65%),
@@ -234,10 +229,17 @@ body[data-kind]:not([data-kind="home"])::after {
   mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 60%, transparent 100%);
   -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 60%, transparent 100%);
 }
+/* 非首页：下层网格不显示 */
+body[data-kind]:not([data-kind="home"])::after {
+  display: none;
+}
 .dark body::after {
   background-image:
-    linear-gradient(rgba(var(--color-primary-400), 0.45) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(var(--color-primary-400), 0.45) 1px, transparent 1px);
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(var(--color-neutral-100), 0.35) 0%, rgba(var(--color-neutral-100), 0.18) 30%, transparent 65%),
+    linear-gradient(rgba(255, 255, 255, 0.25) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.25) 2px, transparent 2px);
+  background-size: 100% 100%, 80px 80px, 80px 80px;
+  background-repeat: no-repeat, repeat, repeat;
   opacity: 0.5;
 }
 
@@ -271,8 +273,11 @@ body::before {
 }
 .dark body::before {
   background-image:
-    linear-gradient(rgba(var(--color-primary-400), 0.4) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(var(--color-primary-400), 0.4) 1px, transparent 1px);
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(var(--color-neutral-100), 0.3) 0%, rgba(var(--color-neutral-100), 0.15) 30%, transparent 65%),
+    linear-gradient(rgba(255, 255, 255, 0.25) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.25) 2px, transparent 2px);
+  background-size: 100% 100%, 80px 80px, 80px 80px;
+  background-repeat: no-repeat, repeat, repeat;
   opacity: 0.45;
 }
 
@@ -450,7 +455,8 @@ body::before {
   color: rgb(var(--color-secondary-400));
 }
 .entrance-hero__index-sep {
-  opacity: 0.5;
+  /* color: rgb(var(--color-primary-500)); */
+  opacity: 0.8;
 }
 .entrance-hero__index-cap {
   color: rgb(var(--color-neutral-600));
@@ -511,10 +517,11 @@ body::before {
   color: color-mix(in srgb, rgb(var(--color-neutral-500)) 18%, transparent);
 }
 .dark .entrance-hero__verse {
-  color: color-mix(in srgb, rgb(var(--color-primary-400)) 12%, transparent);
+  color: color-mix(in srgb, rgb(var(--color-neutral-100)) 12%, transparent);
+  text-shadow: 0 0 8px color-mix(in srgb, rgb(var(--color-neutral-500)) 70%, transparent);
 }
 .dark .entrance-hero__verse.is-final {
-  color: color-mix(in srgb, rgb(var(--color-primary-400)) 16%, transparent);
+  color: color-mix(in srgb, rgb(var(--color-neutral-100)) 16%, transparent);
 }
 
 /* ASCII noise 动画字符 —— 不写死 width；让每个字符按其字形自然占位，
@@ -620,18 +627,58 @@ body::before {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35), /* 顶部高光描边 */
     inset 0 -1px 0 rgba(var(--color-secondary-300), 0.55), /* 底部"雾"描边 */
-    rgba(var(--color-primary-500), 0.3) 0 6px 18px -4px,
+    inset 6px 6px 16px rgba(var(--color-neutral-900), 0), /* 左上光泽 · hover 渐显 */
+    inset -6px -6px 16px rgba(var(--color-neutral-900), 0), /* 右下光泽 · hover 渐显 */
+    rgba(var(--color-neutral-900), 0.3) 0 6px 18px -4px,
     rgba(0, 0, 0, 0.05) 0 1px 2px;
   transition:
     transform 250ms cubic-bezier(0.2, 0, 0, 1),
-    box-shadow 250ms ease-out,
+    box-shadow 300ms ease-out,
     background-color 250ms ease-out,
     padding-right 250ms ease-out;
+  overflow: hidden;
+}
+.entrance-hero__cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      120% 140% at 30% -40%,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0) 60%
+    ),
+    radial-gradient(
+      160% 220% at 80% 130%,
+      rgba(var(--color-primary-200), 0.9) 0%,
+      rgba(var(--color-primary-400), 0) 55%
+    ),
+    radial-gradient(
+      120% 160% at 90% 100%,
+      rgba(var(--color-secondary-300), 0.6) 0%,
+      rgba(var(--color-secondary-300), 0) 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(var(--color-primary-500)) 0%,
+      rgb(var(--color-primary-400)) 55%,
+      rgb(var(--color-primary-600)) 100%
+    );
+  background-blend-mode: screen, normal, normal, normal;
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+  z-index: 0;
+}
+.entrance-hero__cta > * {
+  position: relative;
+  z-index: 1;
 }
 /* 文字标签 */
 .entrance-hero__cta-label {
   display: inline-block;
   white-space: nowrap;
+  color: rgb(var(--color-neutral-50));
 }
 /* 箭头 —— 初始隐藏在 pill 右侧 padding 区域内（width:0），
    hover 时 width: 1.1em → 在 pill 的 16px padding-right 内滑动出现。
@@ -647,7 +694,8 @@ body::before {
     width 220ms cubic-bezier(0.2, 0, 0, 1),
     margin-left 220ms cubic-bezier(0.2, 0, 0, 1) 60ms,
     opacity 220ms ease-out 60ms,
-    transform 220ms cubic-bezier(0.2, 0, 0, 1) 60ms;
+    transform 220ms cubic-bezier(0.2, 0, 0, 1) 60ms,
+    color 300ms ease-out;
   color: inherit;
 }
 .entrance-hero__cta:hover .entrance-hero__cta-arrow,
@@ -663,11 +711,17 @@ body::before {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.45),
     inset 0 -1px 0 rgba(var(--color-secondary-300), 0.7),
+    inset 6px 6px 16px rgba(var(--color-primary-500), 0.35),
+    inset -6px -6px 16px rgba(var(--color-secondary-500), 0.3),
     rgba(var(--color-primary-500), 0.45) 0 12px 28px -4px,
     rgba(0, 0, 0, 0.1) 0 2px 4px;
 }
+.entrance-hero__cta:hover::before,
+.entrance-hero__cta.is-hover::before {
+  opacity: 1;
+}
 .dark .entrance-hero__cta {
-  color: rgb(var(--color-neutral-900));
+  color: rgb(var(--color-neutral-100));
   background:
     radial-gradient(
       120% 140% at 30% -40%,
@@ -689,10 +743,13 @@ body::before {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.25),
     inset 0 -1px 0 rgba(var(--color-primary-200), 0.5),
-    rgba(var(--color-primary-500), 0.3) 0 6px 18px -4px,
+    inset 6px 6px 16px rgba(var(--color-neutral-900), 0),
+    inset -6px -6px 16px rgba(var(--color-neutral-900), 0),
+    rgba(var(--color-neutral-900), 0.3) 0 6px 18px -4px,
     rgba(0, 0, 0, 0.06) 0 1px 2px;
 }
-.dark .entrance-hero__cta:hover {
+.dark .entrance-hero__cta::before {
+  /* hover 时切换为白天模式 base 的渐变 */
   background:
     radial-gradient(
       120% 140% at 30% -40%,
@@ -701,15 +758,31 @@ body::before {
     ),
     radial-gradient(
       160% 220% at 80% 130%,
-      rgba(var(--color-secondary-400), 0.55) 0%,
-      rgba(var(--color-secondary-400), 0) 55%
+      rgba(var(--color-primary-300), 0.85) 0%,
+      rgba(var(--color-primary-500), 0) 55%
+    ),
+    radial-gradient(
+      120% 160% at 90% 100%,
+      rgba(var(--color-secondary-400), 0.45) 0%,
+      rgba(var(--color-secondary-400), 0) 60%
     ),
     linear-gradient(
       180deg,
-      rgb(var(--color-primary-400)) 0%,
-      rgb(var(--color-primary-500)) 100%
+      rgb(var(--color-primary-600)) 0%,
+      rgb(var(--color-primary-500)) 55%,
+      rgb(var(--color-primary-700)) 100%
     );
-  color: rgb(var(--color-neutral-900));
+  background-blend-mode: screen, normal, normal, normal;
+}
+.dark .entrance-hero__cta:hover,
+.dark .entrance-hero__cta.is-hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 rgba(var(--color-primary-200), 0.5),
+    inset 6px 6px 16px rgba(var(--color-neutral-900), 0.35),
+    inset -6px -6px 16px rgba(var(--color-neutral-900), 0.3),
+    rgba(var(--color-neutral-900), 0.45) 0 12px 28px -4px,
+    rgba(0, 0, 0, 0.1) 0 2px 4px;
 }
 
 /* prose 块（站点 .Content）—— 紧贴 hero 之后，限制宽度 */
@@ -730,52 +803,25 @@ body::before {
 }
 .entrance-recent > h2,
 .entrance-podcast__head {
-  font-family: var(--font-display);
-  letter-spacing: -0.025em;
-  color: rgb(var(--color-neutral-900));
-  margin-top: 0 !important;
-  margin-bottom: var(--rhythm-12) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  color: rgb(var(--color-neutral-600)) !important;
+  margin-top: var(--rhythm-12) !important;
+  margin-bottom: var(--rhythm-4) !important;
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
-}
-.entrance-recent > h2,
-.entrance-podcast__head {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgb(var(--color-primary-500));
-  margin-top: var(--rhythm-12);
-  margin-bottom: var(--rhythm-4);
-}
-.entrance-recent > h2::before,
-.entrance-podcast__head::before {
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  color: rgb(var(--color-primary-500));
-}
-.entrance-recent > h2::before {
-  content: "01 / ";
-}
-.entrance-podcast__head::before {
-  content: "02 / ";
+  gap: var(--rhythm-2);
 }
 .dark .entrance-recent > h2,
 .dark .entrance-podcast__head {
-  color: rgb(var(--color-neutral));
-}
-.dark .entrance-recent > h2::before,
-.dark .entrance-podcast__head::before {
-  color: rgb(var(--color-secondary-400));
+  color: rgb(var(--color-neutral-400)) !important;
 }
 
 /* Recent 段内的年份小标题：mono 小字 + 扎染蓝 */
-.entrance-recent h3,
-.entrance-recent h2.text-2xl {
+.entrance-recent h3 {
   font-family: var(--font-mono) !important;
   font-size: 0.75rem !important;
   font-weight: 500 !important;
@@ -786,8 +832,7 @@ body::before {
   margin-bottom: var(--rhythm-4) !important;
   border-bottom: none !important;
 }
-.dark .entrance-recent h3,
-.dark .entrance-recent h2.text-2xl {
+.dark .entrance-recent h3 {
   color: rgb(var(--color-secondary-400)) !important;
 }
 

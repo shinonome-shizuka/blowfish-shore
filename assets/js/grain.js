@@ -62,7 +62,7 @@
 
     const cx = w / 2, cy = h / 2;
     const rMax = Math.max(w, h) * 0.6;
-    ctx.fillStyle = "rgba(0,0,0,0.32)";
+    ctx.fillStyle = DARK ? "rgba(255,255,255,0.25)" : "rgba(0,0,0,0.32)";
 
     /* Grid scan — every cell gets a density value from radial + fbm. */
     for (let gx = 0; gx < w; gx += CELL) {
@@ -93,7 +93,7 @@
 
     /* Old-paper press lines — kept thin, page colour unchanged. */
     ctx.globalAlpha = 0.14;
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = DARK ? "#fff" : "#000";
     for (let y = 0; y < h; y += 6) {
       if (Math.random() < 0.25) ctx.fillRect(0, y, w, 1);
     }
