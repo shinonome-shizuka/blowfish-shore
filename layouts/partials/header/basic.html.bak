@@ -1,5 +1,4 @@
 <div class="main-menu flex items-center w-full gap-2 p-1 pl-0">
-  {{ partial "header/breathing-dot.html" . }}
   {{ if .Site.Params.Logo }}
     {{ $logo := resources.Get .Site.Params.Logo }}
     {{ if $logo }}
@@ -23,6 +22,7 @@
     {{ end }}
   {{ end }}
   {{ if not .Site.Params.disableTextInHeader | default true }}
+  {{ partial "header/breathing-dot.html" . }}
     <a href="{{ "" | relLangURL }}" class="text-base font-medium truncate min-w-0 shrink">
       {{ .Site.Title | markdownify }}
     </a>

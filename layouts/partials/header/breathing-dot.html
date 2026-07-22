@@ -1,0 +1,7 @@
+{{/* 呼吸灯小红点 - 仅在非首页显示 */}}
+{{ if not .IsHome }}
+<a href="{{ "" | relLangURL }}" class="breathing-dot-wrapper" aria-label="返回首页">
+  <span class="breathing-dot"></span>
+  <span class="breathing-dot-tooltip">返回首页</span>
+</a>
+{{ end }}

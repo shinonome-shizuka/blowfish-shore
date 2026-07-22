@@ -23,6 +23,7 @@
     {{ end }}
   {{ end }}
   {{ if not .Site.Params.disableTextInHeader | default true }}
+  {{ partial "header/breathing-dot.html" . }}
     <a href="{{ "" | relLangURL }}" class="text-base font-medium truncate min-w-0 shrink">
       {{ .Site.Title | markdownify }}
     </a>

@@ -128,7 +128,8 @@ code, pre, kbd, samp {
     rgba(0, 0, 0, 0.04) 0px 4px 12px,
     rgba(0, 0, 0, 0.025) 0px 1px 4px !important;
 }
-.dark .article-link--card {
+.dark .article-link--card,
+.dark .article-link--card * {
   background-color: rgb(var(--color-neutral-800)) !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
   box-shadow:
@@ -137,7 +138,7 @@ code, pre, kbd, samp {
     rgba(0, 0, 0, 0.15) 0px 1px 3px !important;
 }
 .dark .article-link--card:hover {
-  border-color: rgba(var(--color-secondary-400), 0.6) !important;
+  border-color: rgba(var(--color-primary-400), 0.4) !important;
   box-shadow:
     rgba(0, 0, 0, 0.6) 0px 10px 28px,
     rgba(0, 0, 0, 0.4) 0px 4px 12px !important;
@@ -152,9 +153,8 @@ code, pre, kbd, samp {
   letter-spacing: -0.015em;
   color: rgb(var(--color-neutral-900));
 }
-.dark .article-link--card h2,
-.dark .article-link--card a {
-  color: rgb(var(--color-neutral-100)) !important;
+.dark .article-link--card h2 {
+  color: rgb(var(--color-neutral-100));
 }
 
 /* 卡片 meta 行（日期）12px notion badge 风格 */
@@ -167,7 +167,7 @@ code, pre, kbd, samp {
 }
 .dark .article-link--card time,
 .dark .article-link--card .text-sm {
-  color: rgb(var(--color-neutral-600)) !important;
+  color: rgb(var(--color-neutral-400)) !important;
 }
 
 /* "最新文章"段头：tight tracking · 无 border */
@@ -1277,23 +1277,10 @@ article .prose li {
   bottom: 0;
 }
 .dark .article-link--timeline {
-  --timeline-color: rgb(var(--color-secondary-400));
-  --timeline-glow: rgba(var(--color-secondary-400), 0.45);
-  --timeline-halo: rgba(var(--color-secondary-400), 0.18);
+  --timeline-color: rgb(var(--color-primary-400));
+  --timeline-glow: rgba(var(--color-primary-400), 0.45);
+  --timeline-halo: rgba(var(--color-primary-400), 0.18);
 }
-
-/* 暗色模式 timeline category badge 毛玻璃效果 */
-.dark .article-link--timeline__cat {
-  backdrop-filter: blur(8px) saturate(150%);
-  -webkit-backdrop-filter: blur(8px) saturate(150%);
-  background: rgba(var(--color-secondary-400), 0.15);
-  border: 1px solid rgba(var(--color-secondary-400), 0.3);
-}
-.dark .article-link--timeline__cat:hover {
-  background: rgba(var(--color-secondary-400), 0.8);
-  color: rgb(var(--color-neutral-800));
-}
-
 .article-link--timeline__content {
   margin: 0;
 }
@@ -1310,15 +1297,6 @@ article .prose li {
   line-height: 1.4;
   letter-spacing: -0.02em;
 }
-.article-link--timeline__content h2 a {
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  transition: text-decoration-color 200ms ease-out;
-}
-.article-link--timeline__content h2 a:hover {
-  text-decoration-color: rgb(var(--color-warning));
-}
-
 .article-link--timeline__content p,
 .article-link--timeline__content img,
 .article-link--timeline__content div {
@@ -1476,14 +1454,6 @@ article > footer a:hover {
   opacity: 0.92;
 }
 
-.dark .entrance-cat-badge {
-  backdrop-filter: blur(8px) saturate(150%);
-  -webkit-backdrop-filter: blur(8px) saturate(150%);
-  background: linear-gradient(135deg, var(--cat-dark) 0%, var(--cat-light) 100%);
-  opacity: 0.75;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
 /* 游戏主题色映射 */
 .entrance-cat-badge[data-cat="批评"],
 .entrance-cat-badge[data-cat="评论"],
@@ -1592,78 +1562,4 @@ article > footer a:hover {
 .entrance-card-meta__sep {
   color: rgb(var(--color-neutral-300));
   user-select: none;
-}
-
-
-/* 卡片标题下划线颜色 */
-.article-link--card a {
-  text-decoration-color: rgb(var(--color-primary-500)) !important;
-}
-.article-link--card a:hover {
-  text-decoration-color: rgb(var(--color-primary-500)) !important;
-}
-.dark .article-link--card a {
-  text-decoration-color: rgb(var(--color-secondary-500)) !important;
-}
-.dark .article-link--card a:hover {
-  text-decoration-color: rgb(var(--color-secondary-500)) !important;
-}
-
-/* 呼吸灯小红点 - 导航栏 */
-.breathing-dot-wrapper {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 10px;
-  height: 10px;
-  padding: 0;
-  background-color: #F04E8A;
-  border-radius: 5px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 8px rgba(240, 78, 138, 0.6);
-  animation: breathing 2s ease-in-out infinite;
-}
-
-.breathing-dot-wrapper:hover {
-  min-width: 100px;
-  padding: 0 12px;
-  border-radius: 15px;
-}
-
-.breathing-dot {
-  display: none;
-}
-
-.breathing-dot-tooltip {
-  color: #fff;
-  font-size: 0.875rem;
-  font-weight: 500;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.breathing-dot-wrapper:hover .breathing-dot-tooltip {
-  opacity: 1;
-}
-
-@keyframes breathing {
-  0%, 100% {
-    box-shadow: 0 0 8px rgba(240, 78, 138, 0.6);
-  }
-  50% {
-    box-shadow: 0 0 16px rgba(240, 78, 138, 0.9);
-  }
-}
-
-/* 暗色模式适配 */
-.dark .breathing-dot-wrapper {
-  background-color: #F04E8A;
-}
-
-.dark .breathing-dot-tooltip {
-  color: #fff;
 }
