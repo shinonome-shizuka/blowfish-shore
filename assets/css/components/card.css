@@ -1,0 +1,81 @@
+/* ==========================================================================
+   Card Component
+   ==========================================================================
+   来源：custom.css L110-179（基础）、L1351-1359（全站 summary）
+   当前类名与 HTML 模板绑定，不重命名以避免侵入模板层
+   后续 template-level 改造时一并迁移到 .card / .card__title / .card__meta
+   ========================================================================== */
+
+/* ---------- 基础卡片 ---------- */
+.article-link--card {
+  border-radius: 12px !important;
+  border-color: var(--color-border-card) !important;
+  background-color: var(--color-bg-card) !important;
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out);
+  box-shadow: var(--shadow-card-md) !important;
+}
+.article-link--card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--color-primary-500), 0.35) !important;
+  box-shadow: var(--shadow-card-hover) !important;
+}
+.dark .article-link--card {
+  background-color: var(--color-bg-card-dark) !important;
+  border-color: var(--color-border-card-dark) !important;
+  box-shadow: var(--shadow-card-md-dark) !important;
+}
+.dark .article-link--card:hover {
+  border-color: rgba(var(--color-secondary-400), 0.6) !important;
+  box-shadow: var(--shadow-card-hover-dark) !important;
+}
+
+/* ---------- 卡片标题 ---------- */
+.article-link--card h2 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: rgb(var(--color-neutral-900));
+}
+.dark .article-link--card h2,
+.dark .article-link--card a {
+  color: rgb(var(--color-neutral-100)) !important;
+}
+
+/* ---------- 卡片 meta（日期/小字）---------- */
+.article-link--card time,
+.article-link--card .text-sm {
+  font-size: 0.75rem !important;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: rgb(var(--color-neutral-500)) !important;
+}
+.dark .article-link--card time,
+.dark .article-link--card .text-sm {
+  color: rgb(var(--color-neutral-500)) !important;
+}
+
+/* ---------- 全站列表页摘要 ---------- */
+.article-link__summary {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgb(var(--color-neutral-600));
+}
+.dark .article-link__summary {
+  color: rgb(var(--color-neutral-300));
+}
+
+/* ---------- 下划线颜色（hover 时）---------- */
+.article-link--card a,
+.article-link--card a:hover {
+  text-decoration-color: rgb(var(--color-primary-500)) !important;
+}
+.dark .article-link--card a,
+.dark .article-link--card a:hover {
+  text-decoration-color: rgb(var(--color-secondary-500)) !important;
+}

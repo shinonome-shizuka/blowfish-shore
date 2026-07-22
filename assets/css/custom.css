@@ -128,20 +128,6 @@ code, pre, kbd, samp {
     rgba(0, 0, 0, 0.04) 0px 4px 12px,
     rgba(0, 0, 0, 0.025) 0px 1px 4px !important;
 }
-.dark .article-link--card {
-  background-color: rgb(var(--color-neutral-800)) !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
-  box-shadow:
-    rgba(0, 0, 0, 0.5) 0px 4px 18px,
-    rgba(0, 0, 0, 0.3) 0px 2px 8px,
-    rgba(0, 0, 0, 0.15) 0px 1px 3px !important;
-}
-.dark .article-link--card:hover {
-  border-color: rgba(var(--color-secondary-400), 0.6) !important;
-  box-shadow:
-    rgba(0, 0, 0, 0.6) 0px 10px 28px,
-    rgba(0, 0, 0, 0.4) 0px 4px 12px !important;
-}
 
 /* 卡片标题：思源宋体 22px weight 700 tight tracking */
 .article-link--card h2 {
@@ -152,10 +138,6 @@ code, pre, kbd, samp {
   letter-spacing: -0.015em;
   color: rgb(var(--color-neutral-900));
 }
-.dark .article-link--card h2,
-.dark .article-link--card a {
-  color: rgb(var(--color-neutral-100)) !important;
-}
 
 /* 卡片 meta 行（日期）12px notion badge 风格 */
 .article-link--card time,
@@ -164,10 +146,6 @@ code, pre, kbd, samp {
   font-weight: 500;
   letter-spacing: 0.01em;
   color: rgb(var(--color-neutral-500)) !important;
-}
-.dark .article-link--card time,
-.dark .article-link--card .text-sm {
-  color: rgb(var(--color-neutral-600)) !important;
 }
 
 /* "最新文章"段头：tight tracking · 无 border */
@@ -185,18 +163,12 @@ section > h2.article-timeline__year {
   margin-bottom: 0.5rem;
   padding-left: 0.25rem;
 }
-.dark section > h2.text-2xl {
-  color: rgb(var(--color-neutral-100));
-}
 
 /* intro prose 段落 */
 .prose > section > p:first-of-type {
   font-size: 1.0625rem;
   line-height: 1.7;
   color: rgb(var(--color-neutral-700));
-}
-.dark .prose > section > p:first-of-type {
-  color: rgb(var(--color-neutral-300));
 }
 
 /* body 字体 lnum 数字对齐 */
@@ -239,15 +211,6 @@ body::after {
 body[data-kind]:not([data-kind="home"])::after {
   display: none;
 }
-.dark body::after {
-  background-image:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(var(--color-neutral-100), 0.35) 0%, rgba(var(--color-neutral-100), 0.18) 30%, transparent 65%),
-    linear-gradient(rgba(255, 255, 255, 0.25) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.25) 2px, transparent 2px);
-  background-size: 100% 100%, 80px 80px, 80px 80px;
-  background-repeat: no-repeat, repeat, repeat;
-  opacity: 0.5;
-}
 
 /* 顶层 · 天花板网格 · 80px tile */
 body::before {
@@ -276,15 +239,6 @@ body::before {
   opacity: 0.5;
   mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 60%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 60%, transparent 100%);
-}
-.dark body::before {
-  background-image:
-    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(var(--color-neutral-100), 0.3) 0%, rgba(var(--color-neutral-100), 0.15) 30%, transparent 65%),
-    linear-gradient(rgba(255, 255, 255, 0.25) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.25) 2px, transparent 2px);
-  background-size: 100% 100%, 80px 80px, 80px 80px;
-  background-repeat: no-repeat, repeat, repeat;
-  opacity: 0.45;
 }
 
 @keyframes moveGrid {
@@ -398,9 +352,6 @@ body::before {
      如果后续需要 hero/prose 分隔，改成在 .entrance-prose 顶部加 padding + 0.05
      opacity primary hairline，更克制。*/
 }
-.dark .entrance-hero {
-  /* 保留 dark 钩子以便后续覆盖；当前不设 border-bottom */
-}
 
 /* title 行 —— 左 title，右 social，align-items: flex-end 让 social 底部对齐
    title 文字底部；gap 紧贴（约 12px），让 @名 直接靠 title */
@@ -457,18 +408,12 @@ body::before {
   color: rgb(var(--color-primary-500));
   font-weight: 700;
 }
-.dark .entrance-hero__index {
-  color: rgb(var(--color-secondary-400));
-}
 .entrance-hero__index-sep {
   /* color: rgb(var(--color-primary-500)); */
   opacity: 0.8;
 }
 .entrance-hero__index-cap {
   color: rgb(var(--color-neutral-600));
-}
-.dark .entrance-hero__index-cap {
-  color: rgb(var(--color-neutral-400));
 }
 
 /* 大字标题 —— 思源宋体（中文）/ Hack（英文）混排，巨大字号，tight tracking */
@@ -486,9 +431,6 @@ body::before {
   overflow-wrap: anywhere;
   min-width: 0;
   max-width: 100%;
-}
-.dark .entrance-hero__title {
-  color: rgb(var(--color-neutral));
 }
 
 /* 诗签 —— 衬线体大字，绝对定位于 hero 左缘，顺时针 90° 旋转。
@@ -521,13 +463,6 @@ body::before {
 }
 .entrance-hero__verse.is-final {
   color: color-mix(in srgb, rgb(var(--color-neutral-500)) 18%, transparent);
-}
-.dark .entrance-hero__verse {
-  color: color-mix(in srgb, rgb(var(--color-neutral-100)) 12%, transparent);
-  text-shadow: 0 0 8px color-mix(in srgb, rgb(var(--color-neutral-500)) 70%, transparent);
-}
-.dark .entrance-hero__verse.is-final {
-  color: color-mix(in srgb, rgb(var(--color-neutral-100)) 16%, transparent);
 }
 
 /* ASCII noise 动画字符 —— 不写死 width；让每个字符按其字形自然占位，
@@ -563,9 +498,6 @@ body::before {
   flex-wrap: wrap;
   gap: var(--rhythm-2);
 }
-.dark .entrance-hero__cta-socials a {
-  color: rgb(var(--color-neutral-400));
-}
 .entrance-hero__cta-row::before {
   content: "";
   position: absolute;
@@ -578,14 +510,6 @@ body::before {
     rgb(var(--color-primary-500) / 0.55) 0%,
     rgb(var(--color-primary-500) / 0.55) 60%,
     rgb(var(--color-primary-500) / 0) 100%
-  );
-}
-.dark .entrance-hero__cta-row::before {
-  background: linear-gradient(
-    90deg,
-    rgb(var(--color-primary-400) / 0.55) 0%,
-    rgb(var(--color-primary-400) / 0.55) 60%,
-    rgb(var(--color-primary-400) / 0) 100%
   );
 }
 .entrance-hero__meta-sep {
@@ -726,70 +650,6 @@ body::before {
 .entrance-hero__cta.is-hover::before {
   opacity: 1;
 }
-.dark .entrance-hero__cta {
-  color: rgb(var(--color-neutral-100));
-  background:
-    radial-gradient(
-      120% 140% at 30% -40%,
-      rgba(255, 255, 255, 0.12) 0%,
-      rgba(255, 255, 255, 0) 60%
-    ),
-    radial-gradient(
-      160% 220% at 80% 130%,
-      rgba(var(--color-primary-200), 0.85) 0%,
-      rgba(var(--color-primary-400), 0) 55%
-    ),
-    linear-gradient(
-      180deg,
-      rgb(var(--color-primary-500)) 0%,
-      rgb(var(--color-primary-400)) 55%,
-      rgb(var(--color-primary-700)) 100%
-    );
-  background-blend-mode: screen, normal, normal;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.25),
-    inset 0 -1px 0 rgba(var(--color-primary-200), 0.5),
-    inset 6px 6px 16px rgba(var(--color-neutral-900), 0),
-    inset -6px -6px 16px rgba(var(--color-neutral-900), 0),
-    rgba(var(--color-neutral-900), 0.3) 0 6px 18px -4px,
-    rgba(0, 0, 0, 0.06) 0 1px 2px;
-}
-.dark .entrance-hero__cta::before {
-  /* hover 时切换为白天模式 base 的渐变 */
-  background:
-    radial-gradient(
-      120% 140% at 30% -40%,
-      rgba(255, 255, 255, 0.18) 0%,
-      rgba(255, 255, 255, 0) 60%
-    ),
-    radial-gradient(
-      160% 220% at 80% 130%,
-      rgba(var(--color-primary-300), 0.85) 0%,
-      rgba(var(--color-primary-500), 0) 55%
-    ),
-    radial-gradient(
-      120% 160% at 90% 100%,
-      rgba(var(--color-secondary-400), 0.45) 0%,
-      rgba(var(--color-secondary-400), 0) 60%
-    ),
-    linear-gradient(
-      180deg,
-      rgb(var(--color-primary-600)) 0%,
-      rgb(var(--color-primary-500)) 55%,
-      rgb(var(--color-primary-700)) 100%
-    );
-  background-blend-mode: screen, normal, normal, normal;
-}
-.dark .entrance-hero__cta:hover,
-.dark .entrance-hero__cta.is-hover {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.25),
-    inset 0 -1px 0 rgba(var(--color-primary-200), 0.5),
-    inset 6px 6px 16px rgba(var(--color-neutral-900), 0.35),
-    inset -6px -6px 16px rgba(var(--color-neutral-900), 0.3),
-    rgba(var(--color-neutral-900), 0.45) 0 12px 28px -4px,
-    rgba(0, 0, 0, 0.1) 0 2px 4px;
-}
 
 /* prose 块（站点 .Content）—— 紧贴 hero 之后，限制宽度 */
 .entrance-prose {
@@ -821,10 +681,6 @@ body::before {
   align-items: baseline;
   gap: var(--rhythm-2);
 }
-.dark .entrance-recent > h2,
-.dark .entrance-podcast__head {
-  color: rgb(var(--color-neutral-400)) !important;
-}
 
 /* Recent 段内的年份小标题：mono 小字 + 扎染蓝 */
 .entrance-recent h3 {
@@ -837,9 +693,6 @@ body::before {
   margin-top: var(--rhythm-12) !important;
   margin-bottom: var(--rhythm-4) !important;
   border-bottom: none !important;
-}
-.dark .entrance-recent h3 {
-  color: rgb(var(--color-secondary-400)) !important;
 }
 
 /* Recent 段：CSS multi-column 瀑布流（按内容高度错位，纯静态 CSS） */
@@ -937,9 +790,6 @@ body::before {
   max-width: none !important;
   width: 100% !important;
 }
-.dark .entrance-recent .article-link__summary {
-  color: rgb(var(--color-neutral-400));
-}
 
 /* 02 最新播客 */
 .entrance-podcast {
@@ -956,13 +806,6 @@ body::before {
     rgba(0, 0, 0, 0.027) 0px 2px 8px,
     rgba(0, 0, 0, 0.02) 0px 1px 3px;
   overflow: hidden;
-}
-.dark .entrance-podcast__card {
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow:
-    rgba(0, 0, 0, 0.5) 0px 4px 18px,
-    rgba(0, 0, 0, 0.3) 0px 2px 8px,
-    rgba(0, 0, 0, 0.15) 0px 1px 3px;
 }
 .entrance-podcast__frame {
   position: relative;
@@ -990,13 +833,6 @@ body::before {
     rgba(0, 0, 0, 0.02) 0px 1px 3px;
   overflow: hidden;
   line-height: 0;
-}
-.dark .rss-episode-player__wrap {
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow:
-    rgba(0, 0, 0, 0.5) 0px 4px 18px,
-    rgba(0, 0, 0, 0.3) 0px 2px 8px,
-    rgba(0, 0, 0, 0.15) 0px 1px 3px;
 }
 .rss-episode-player__wrap iframe {
   display: block;
@@ -1030,9 +866,6 @@ article .prose {
   line-height: 1.75;
   color: rgb(var(--color-neutral-800));
 }
-.dark article .prose {
-  color: rgb(var(--color-neutral-200));
-}
 
 /* h2：Long Document 静默 h2 —— 无编号、无边框，靠字号与字距建势 */
 article .prose h2 {
@@ -1050,9 +883,6 @@ article .prose h2 {
   overflow-wrap: anywhere;
   min-width: 0;
 }
-.dark article .prose h2 {
-  color: rgb(var(--color-neutral));
-}
 
 article .prose h3 {
   font-family: var(--font-display);
@@ -1065,9 +895,6 @@ article .prose h3 {
   margin-bottom: var(--rhythm-2);
   padding: 0;
   border: none;
-}
-.dark article .prose h3 {
-  color: rgb(var(--color-neutral));
 }
 
 /* 段落：段间空行（Long Document 节奏：留白分隔）*/
@@ -1089,10 +916,6 @@ article .prose a:hover {
   color: rgb(var(--color-secondary-700));
   text-decoration-thickness: 2px;
 }
-.dark article .prose a {
-  color: rgb(var(--color-secondary-300));
-  text-decoration-color: rgba(var(--color-success), 0.8);
-}
 
 /* 引文 blockquote：左贴边电光蓝竖条 + 缩进，松呼吸 */
 article .prose blockquote {
@@ -1106,10 +929,6 @@ article .prose blockquote {
   margin: var(--rhythm-6) 0;
   background: transparent;
 }
-.dark article .prose blockquote {
-  color: rgb(var(--color-neutral-300));
-  border-left-color: rgb(var(--color-secondary-400));
-}
 
 /* 行内 code：mono 小字 + 微底色（不抢戏）*/
 article .prose code {
@@ -1120,10 +939,6 @@ article .prose code {
   background-color: rgba(var(--color-neutral-200), 0.5);
   color: rgb(var(--color-primary-700));
   border-radius: 3px;
-}
-.dark article .prose code {
-  background-color: rgba(var(--color-neutral-700), 0.5);
-  color: rgb(var(--color-secondary-300));
 }
 
 /* code block：思源宋体 mono 不必介入，保持 Hack mono */
@@ -1137,10 +952,6 @@ article .prose pre {
   background-color: rgb(var(--color-neutral-900));
   color: rgb(var(--color-neutral-100));
 }
-.dark article .prose pre {
-  background-color: rgb(var(--color-neutral-900));
-  color: rgb(var(--color-neutral-200));
-}
 article .prose pre code {
   background: transparent;
   color: inherit;
@@ -1153,9 +964,6 @@ article .prose hr {
   border-top: 1px solid rgba(var(--color-neutral-300), 0.6);
   margin: var(--rhythm-12) auto;
   width: 30%;
-}
-.dark article .prose hr {
-  border-top-color: rgba(var(--color-neutral-700), 0.6);
 }
 
 /* 列表：左缩进 + 紧排版 */
@@ -1190,9 +998,6 @@ article .prose li {
   margin-bottom: var(--rhythm-4);
   overflow-wrap: anywhere;
   min-width: 0;
-}
-.dark #single_header h1 {
-  color: rgb(var(--color-neutral));
 }
 
 /* 时间轴样式 · article-link--timeline */
@@ -1276,23 +1081,6 @@ article .prose li {
 .article-link--timeline:last-child .article-link--timeline__line {
   bottom: 0;
 }
-.dark .article-link--timeline {
-  --timeline-color: rgb(var(--color-secondary-400));
-  --timeline-glow: rgba(var(--color-secondary-400), 0.45);
-  --timeline-halo: rgba(var(--color-secondary-400), 0.18);
-}
-
-/* 暗色模式 timeline category badge 毛玻璃效果 */
-.dark .article-link--timeline__cat {
-  backdrop-filter: blur(8px) saturate(150%);
-  -webkit-backdrop-filter: blur(8px) saturate(150%);
-  background: rgba(var(--color-secondary-400), 0.15);
-  border: 1px solid rgba(var(--color-secondary-400), 0.3);
-}
-.dark .article-link--timeline__cat:hover {
-  background: rgba(var(--color-secondary-400), 0.8);
-  color: rgb(var(--color-neutral-800));
-}
 
 .article-link--timeline__content {
   margin: 0;
@@ -1354,9 +1142,6 @@ article .prose li {
   line-height: 1.6;
   color: rgb(var(--color-neutral-600));
 }
-.dark .article-link__summary {
-  color: rgb(var(--color-neutral-300));
-}
 .article-link--timeline__stats {
   margin-top: 1rem;
   padding-top: 0.75rem;
@@ -1368,10 +1153,6 @@ article .prose li {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-.dark .article-link--timeline__stats {
-  border-top-color: rgba(var(--color-neutral-600), 0.5);
-  color: rgb(var(--color-neutral-400));
 }
 .article-link--timeline__stats .inline-flex {
   opacity: 0.85;
@@ -1413,9 +1194,6 @@ article > footer {
   padding-top: var(--rhythm-6);
   border-top: 1px solid rgba(var(--color-neutral-300), 0.6);
 }
-.dark article > footer {
-  border-top-color: rgba(var(--color-neutral-700), 0.6);
-}
 article > footer a {
   font-family: var(--font-mono);
   font-size: 0.875rem;
@@ -1426,12 +1204,6 @@ article > footer a:hover {
   color: rgb(var(--color-primary-500));
   text-decoration: underline;
   text-decoration-color: rgba(var(--color-success), 0.7);
-}
-.dark article > footer a {
-  color: rgb(var(--color-neutral-300));
-}
-.dark article > footer a:hover {
-  color: rgb(var(--color-secondary-400));
 }
 
 /* mobile：单文章字号微调，避免 horizontal scroll */
@@ -1474,14 +1246,6 @@ article > footer a:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
   background: linear-gradient(135deg, var(--cat-dark) 0%, var(--cat-light) 100%);
   opacity: 0.92;
-}
-
-.dark .entrance-cat-badge {
-  backdrop-filter: blur(8px) saturate(150%);
-  -webkit-backdrop-filter: blur(8px) saturate(150%);
-  background: linear-gradient(135deg, var(--cat-dark) 0%, var(--cat-light) 100%);
-  opacity: 0.75;
-  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 /* 游戏主题色映射 */
@@ -1546,10 +1310,6 @@ article > footer a:hover {
   border: 1px solid rgb(var(--color-secondary-500));
   border-radius: 0.375rem;
 }
-.dark .entrance-assoc-badge {
-  color: rgb(var(--color-secondary-400));
-  border-color: rgb(var(--color-secondary-600));
-}
 
 /* Card 底部字数/阅读时间：柔和分隔，与摘要自然分层 */
 .entrance-card-meta {
@@ -1583,9 +1343,6 @@ article > footer a:hover {
   font-weight: 600;
   color: rgb(var(--color-neutral-600));
 }
-.dark .entrance-card-meta__value {
-  color: rgb(var(--color-neutral-300));
-}
 .entrance-card-meta__label {
   font-size: 0.625rem;
 }
@@ -1601,12 +1358,6 @@ article > footer a:hover {
 }
 .article-link--card a:hover {
   text-decoration-color: rgb(var(--color-primary-500)) !important;
-}
-.dark .article-link--card a {
-  text-decoration-color: rgb(var(--color-secondary-500)) !important;
-}
-.dark .article-link--card a:hover {
-  text-decoration-color: rgb(var(--color-secondary-500)) !important;
 }
 
 /* 呼吸灯小红点 - 导航栏 */
@@ -1657,13 +1408,4 @@ article > footer a:hover {
   50% {
     box-shadow: 0 0 16px rgba(240, 78, 138, 0.9);
   }
-}
-
-/* 暗色模式适配 */
-.dark .breathing-dot-wrapper {
-  background-color: #F04E8A;
-}
-
-.dark .breathing-dot-tooltip {
-  color: #fff;
 }

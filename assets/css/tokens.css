@@ -1,0 +1,53 @@
+/* ==========================================================================
+   Design Tokens · longbeach-shore
+   ==========================================================================
+   集中管理 custom.css 的局部变量。
+   色阶（neutral/primary/secondary/warning/success）已在 schemes/shore.css 定义。
+   语义变量（hover、border、shadow 等）按 BEM 命名，供各组件复用。
+   ========================================================================== */
+
+:root {
+  /* ---------- 字体栈 ---------- */
+  --font-body:    'Hack', 'Noto Sans SC', system-ui, sans-serif;
+  --font-display: 'Hack', 'Source Han Serif SC', serif;
+  --font-mono:    'Hack', 'SF Mono', Consolas, monospace;
+
+  /* ---------- 节奏 token (4pt 派生) ---------- */
+  --rhythm-1:  0.25rem;   /* 4px  */
+  --rhythm-2:  0.5rem;    /* 8px  */
+  --rhythm-4:  1rem;      /* 16px */
+  --rhythm-6:  1.5rem;    /* 24px */
+  --rhythm-12: 3rem;      /* 48px */
+  --rhythm-24: 6rem;      /* 96px */
+  --rhythm-48: 12rem;     /* 192px */
+
+  /* ---------- 语义颜色（基于色阶） ---------- */
+  --color-bg-card:           rgb(var(--color-neutral));
+  --color-bg-card-dark:      rgb(var(--color-neutral-800));
+  --color-text-card:         rgb(var(--color-neutral-900));
+  --color-text-card-dark:    rgb(var(--color-neutral-100));
+  --color-text-meta:         rgb(var(--color-neutral-500));
+  --color-text-meta-dark:    rgb(var(--color-neutral-400));
+  --color-border-card:       rgba(0, 0, 0, 0.08);
+  --color-border-card-dark:  rgba(255, 255, 255, 0.08);
+
+  /* ---------- 阴影 ---------- */
+  --shadow-card-sm:  rgba(0, 0, 0, 0.027) 0px 2px 8px,
+                     rgba(0, 0, 0, 0.02)  0px 1px 3px;
+  --shadow-card-md:  rgba(0, 0, 0, 0.04)  0px 4px 18px,
+                     rgba(0, 0, 0, 0.027) 0px 2px 8px,
+                     rgba(0, 0, 0, 0.02)  0px 1px 3px;
+  --shadow-card-md-dark: rgba(0, 0, 0, 0.5)  0px 4px 18px,
+                        rgba(0, 0, 0, 0.3)  0px 2px 8px,
+                        rgba(0, 0, 0, 0.15) 0px 1px 3px;
+  --shadow-card-hover: rgba(var(--color-neutral-900), 0.3) 0px 6px 18px -4px,
+                       rgba(0, 0, 0, 0.05) 0px 1px 2px;
+  --shadow-card-hover-dark: rgba(0, 0, 0, 0.6) 0px 10px 28px,
+                            rgba(0, 0, 0, 0.4) 0px 4px 12px;
+
+  /* ---------- 动画曲线 / 时长 ---------- */
+  --ease-out:    cubic-bezier(0.33, 1, 0.68, 1);
+  --duration-fast:   150ms;
+  --duration-normal: 220ms;
+  --duration-slow:   300ms;
+}
