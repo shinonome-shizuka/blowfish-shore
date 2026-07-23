@@ -1,0 +1,15 @@
+{{/* 文章页右栏 · 评论（utterances） · 第四张 aside card
+   依赖 site.Params.utterancesRepo 存在
+   默认渲染；frontmatter comments: false 时跳过 */}}
+{{ if and (.Site.Params.utterancesRepo) (ne .Params.comments false) }}
+  <article class="aside-card aside-card--comments" data-card="comments">
+    <header class="aside-card__head">
+      <span class="aside-card__index">04</span>
+      <span class="aside-card__sep">/</span>
+      <span class="aside-card__label">留言</span>
+    </header>
+    <div class="aside-card__body aside-card__comments-mount" data-repo="{{ .Site.Params.utterancesRepo }}">
+      {{/* utterances iframe 由 JS 注入 */}}
+    </div>
+  </article>
+{{ end }}

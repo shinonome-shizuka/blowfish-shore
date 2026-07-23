@@ -1,0 +1,11 @@
+{{/* 文章页 · 评论（utterances）
+   抽到 aside 第四张卡使用，不在主文章流渲染。*/}}
+{{ if site.Params.utterancesRepo }}
+  <script src="https://utteranc.es/client.js"
+          repo="{{ site.Params.utterancesRepo }}"
+          issue-term="pathname"
+          label="comments"
+          theme="github-light"
+          crossorigin="anonymous"
+          async></script>
+{{ end }}

@@ -1,0 +1,107 @@
+{{/* article-link/timeline.html
+   时间轴样式 · 左侧月日 · 右侧标题 + 字数/时长 + 封面 + 摘要 */}}
+{{ $page := .Page }}
+
+{{/* 封面解析 · 优先 cover，其次 featureimage 兼容 */}}
+{{ $cover := "" }}
+{{ with $page.Params.cover }}{{ $cover = . }}{{ end }}
+{{ if not $cover }}{{ with $page.Params.featureimage }}{{ $cover = . }}{{ end }}{{ end }}
+{{ $isRemote := or (hasPrefix $cover "http:") (hasPrefix $cover "https:") }}
+
+{{/* 月日日期 · MM-DD 格式 */}}
+{{ $monthDay := "" }}
+{{ with $page.Date }}
+  {{ $monthDay = .Format "01-02" }}
+{{ end }}
+
+<article class="article-link--timeline relative pb-10"
+  data-date="{{ .Date.Unix }}" data-weight="{{ .Weight | default 0 }}"
+  {{ with .Params.color }}style="--timeline-color: {{ . }};"{{ end }}>
+  {{/* 时间线圆点 */}}
+  <span class="article-link--timeline__dot" aria-hidden="true"></span>
+
+  {{/* 时间线月日 · 圆点右侧 */}}
+  <div class="article-link--timeline__date-block">
+    {{ with $monthDay }}
+      <time class="article-link--timeline__date" datetime="{{ $page.Date.Format "2006-01-02T15:04:05-07:00" }}">
+        {{ . }}
+      </time>
+    {{ end }}
+
+    {{/* 分类 badge · 跟月日同行 */}}
+    {{ with $page.Params.categories }}
+      <a href="{{ (index . 0) | urlize | lower | printf "/categories/%s/" }}" class="article-link--timeline__cat">
+        {{ index . 0 }}
+      </a>
+    {{ end }}
+  </div>
+
+  {{/* 时间线竖线 */}}
+  <span class="article-link--timeline__line" aria-hidden="true"></span>
+
+  <div class="article-link--timeline__content">
+    <header class="mb-2">
+      <a
+        {{ with $page.Params.externalUrl }}
+          href="{{ . }}" target="_blank" rel="external"
+        {{ else }}
+          href="{{ $page.RelPermalink }}"
+        {{ end }}
+        class="not-prose decoration-primary-500 dark:text-neutral text-lg font-bold text-neutral-800 hover:underline hover:underline-offset-2">
+        <h2 class="!mt-0 !mb-0 !text-xl">
+          {{ .Title | emojify }}
+          {{ if .Params.externalUrl }}
+            <span class="cursor-default align-top text-xs text-neutral-400 dark:text-neutral-500">
+              <span class="rtl:hidden">&#8599;</span>
+              <span class="ltr:hidden">&#8598;</span>
+            </span>
+          {{ end }}
+        </h2>
+      </a>
+    </header>
+
+    {{/* 字数 + 阅读时长 · 跟 card.html 一致 · 暂时移到 cover 后摘要前 */}}
+
+    {{ if $cover }}
+      <a href="{{ $page.RelPermalink }}" class="not-prose block mb-3 mt-3 article-link--timeline__cover-wrap">
+        <img
+          src="{{ $cover }}"
+          role="presentation"
+          loading="lazy"
+          decoding="async"
+          {{ if $isRemote }}referrerpolicy="no-referrer"{{ end }}
+          class="article-link--timeline__cover">
+      </a>
+    {{ end }}
+
+    {{ if .Params.showSummary | default (site.Params.list.showSummary | default false) }}
+      <div class="article-link__summary prose dark:prose-invert w-full mt-1 line-clamp-3">
+        {{ .Summary | plainify }}
+      </div>
+    {{ end }}
+
+    {{/* 字数 + 阅读时长 · 摘要后 · 用 mt-3 隔开 · 中间 · 分隔 */}}
+    <div class="article-link--timeline__stats text-sm text-neutral-500 dark:text-neutral-400 mt-3 pt-3 border-t border-neutral-200 dark:border-neutral-700 flex items-center">
+      {{ if (.Site.Params.list.showWordCount | default true) }}
+        <span class="inline-flex items-center">
+          {{ partial "meta/word-count.html" $page }}
+        </span>
+      {{ end }}
+      {{ if and (.Site.Params.list.showWordCount | default true) (.Site.Params.list.showReadingTime | default true) }}
+        <span class="article-link--timeline__sep" aria-hidden="true">/</span>
+      {{ end }}
+      {{ if (.Site.Params.list.showReadingTime | default true) }}
+        <span class="inline-flex items-center">
+          {{ partial "meta/reading-time.html" $page }}
+        </span>
+      {{ end }}
+    </div>
+
+    {{ if and .Draft .Site.Params.article.showDraftLabel }}
+      <div class="mt-2">{{ partial "badge.html" (i18n "article.draft" | emojify) }}</div>
+    {{ end }}
+    {{ if templates.Exists "partials/extend-article-link.html" }}
+      {{ partial "extend-article-link.html" . }}
+    {{ end }}
+  </div>
+</article>

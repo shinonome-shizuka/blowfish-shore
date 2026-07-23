@@ -1,0 +1,67 @@
+{{/* 文章页右栏 · 关联 links 卡片
+   外链由客户端 JS（article-aside-links.js）从 .article-content 内提取 <a> 注入
+   referlink 段落读 frontmatter，无值则不显示
+   末尾三按钮：分享 / 打印 / RSS */}}
+<article class="aside-card aside-card--links">
+  <header class="aside-card__head">
+    <span class="aside-card__index">03</span>
+    <span class="aside-card__sep">/</span>
+    <span class="aside-card__label">关联</span>
+  </header>
+  <ul id="article-aside-links-list" class="aside-card__links">
+    {{/* 由 JS 注入 */}}
+  </ul>
+  {{ with .Params.referlink }}
+    <section class="aside-card__refer">
+      <h4 class="aside-card__subhead">原文链接</h4>
+      <p class="aside-card__origin">
+        <a href="{{ . }}" rel="noopener noreferrer" target="_blank">{{ . }}</a>
+      </p>
+    </section>
+  {{ end }}
+
+  {{/* associate pill · 引用 frontmatter associate 字段（map / 字符串） */}}
+  {{ with .Params.associate }}
+    <div class="aside-card__associate">
+      {{ $associateUrl := "" }}
+      {{ $associateLabel := "" }}
+      {{ if reflect.IsMap . }}
+        {{ $associateUrl = .url }}
+        {{ $associateLabel = or .label .url }}
+      {{ else }}
+        {{ $associateUrl = . }}
+        {{ $associateLabel = . }}
+      {{ end }}
+      <a href="{{ $associateUrl }}" rel="noopener noreferrer" target="_blank" class="aside-associate">{{ $associateLabel }}</a>
+    </div>
+  {{ end }}
+
+  {{/* 工具按钮：分享 / 打印 / RSS */}}
+  <nav class="aside-card__actions" aria-label="文章操作">
+    <button
+      type="button"
+      class="aside-action"
+      data-action="share"
+      aria-label="分享">
+      <span class="aside-action__icon" aria-hidden="true">↗</span>
+      <span class="aside-action__label">分享</span>
+    </button>
+    <button
+      type="button"
+      class="aside-action"
+      data-action="print"
+      aria-label="打印">
+      <span class="aside-action__icon" aria-hidden="true">⎙</span>
+      <span class="aside-action__label">打印</span>
+    </button>
+    <a
+      class="aside-action"
+      href="{{ "/index.xml" | absURL }}"
+      target="_blank"
+      rel="noopener"
+      aria-label="RSS 订阅">
+      <span class="aside-action__icon" aria-hidden="true">⌁</span>
+      <span class="aside-action__label">RSS</span>
+    </a>
+  </nav>
+</article>

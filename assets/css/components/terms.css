@@ -1,0 +1,380 @@
+/* ==========================================================================
+   Terms Cloud · 长滩后院 dusk 风格
+   ==========================================================================
+   cloud 中 tag 字号 = 文章数加权，计数与 tag 字号要拉开
+   ========================================================================== */
+
+.entrance-terms {
+  font-family: var(--font-body);
+}
+
+.terms__cloud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.terms__cloud--nested {
+  margin-top: 0.75rem;
+  margin-left: 1rem;
+  padding-left: 1rem;
+}
+
+.terms__chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  line-height: 1.2;
+}
+
+.terms__chip-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-family: var(--font-display);
+  color: rgb(var(--color-neutral-900));
+  text-decoration: none;
+  transition: color 200ms var(--ease-out);
+}
+.terms__chip-link:hover {
+  color: rgb(var(--color-secondary-500));
+}
+
+.dark .terms__chip-link {
+  color: rgb(var(--color-neutral-100));
+}
+
+.terms__chip-count {
+  /* 远小于 tag 主体，颜色也灰一档，做辅助计数 */
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: rgb(var(--color-neutral-400));
+  opacity: 0.75;
+  letter-spacing: 0;
+  /* 强约束：tag 字号再大，count 也保持小 */
+  max-font-size: 11px;
+  vertical-align: 0.4em;
+}
+.dark .terms__chip-count {
+  color: rgb(var(--color-neutral-500));
+}
+
+/* ---------- Hierarchy 树 ---------- */
+.terms__group {
+  margin-bottom: 2rem;
+  padding-left: 0;
+  list-style: none;
+}
+.terms__group-header {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 0.625rem;
+  padding-bottom: 0.625rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(var(--color-secondary-500), 0.18);
+  font-family: var(--font-display);
+}
+.terms__group-header::-webkit-details-marker {
+  display: none;
+}
+.terms__group-index {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #0900A7;
+  opacity: 0.7;
+}
+.dark .terms__group-index {
+  color: rgb(var(--color-secondary-400));
+}
+.terms__group-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: rgb(var(--color-neutral-900));
+  letter-spacing: -0.01em;
+}
+.dark .terms__group-name {
+  color: rgb(var(--color-secondary-400));
+}
+.terms__group-count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: rgb(var(--color-neutral-500));
+}
+
+/* HIERARCHY 树状的缩进 + 电光蓝竖条 */
+.terms__tree-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+.terms__tree-item {
+  list-style: none;
+}
+/* 顶层 node 前加树形字符 · 白天扎染蓝，夜里电光蓝 */
+.terms__tree-list > .terms__tree-item > .terms__chip-link::before {
+  content: "├─ ";
+  font-family: var(--font-mono);
+  font-weight: 400;
+  color: #0900A7;
+  opacity: 0.7;
+  letter-spacing: 0;
+}
+.terms__tree-list > .terms__tree-item:last-child > .terms__chip-link::before {
+  content: "└─ ";
+}
+.terms__tree-item .terms__children > .terms__tree-item:last-child > .terms__chip-link::before {
+  content: "└─ ";
+}
+.terms__tree-item .terms__children--l2 > .terms__tree-item:last-child > .terms__chip-link::before {
+  content: "└─ ";
+}
+.dark .terms__tree-list > .terms__tree-item > .terms__chip-link::before {
+  color: rgb(var(--color-secondary-400));
+}
+.terms__tree-item > .terms__chip-link {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #0900A7;
+}
+.dark .terms__tree-item > .terms__chip-link {
+  color: rgb(var(--color-secondary-400));
+}
+
+.terms__tree-item .terms__children {
+  margin-top: 0.5rem;
+  margin-left: 1.5rem;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+/* 二级 children 缩进，但无竖条 */
+.terms__tree-item .terms__children--l2 {
+  margin-left: 1rem;
+}
+.terms__tree-item .terms__children .terms__chip-link {
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: rgb(var(--color-neutral-800));
+}
+.dark .terms__tree-item .terms__children .terms__chip-link {
+  color: rgb(var(--color-neutral-100));
+}
+.terms__tree-item .terms__children .terms__chip-link::before {
+  content: "├─ ";
+  font-family: var(--font-mono);
+  font-weight: 400;
+  color: #0900A7;
+  opacity: 0.55;
+  letter-spacing: 0;
+}
+.terms__tree-item .terms__children--l2 .terms__chip-link::before {
+  content: "├─ ";
+}
+.dark .terms__tree-list > .terms__tree-item > .terms__chip-link::before,
+.dark .terms__tree-item .terms__children .terms__chip-link::before,
+.dark .terms__tree-item .terms__children--l2 .terms__chip-link::before {
+  color: rgb(var(--color-secondary-400));
+}
+
+/* ==========================================================================
+   Categories 互动条形图 · LOADING pill 风格
+   - 上方大写 mono label（name 左、count 右）
+   - 下方 pill track：粗边框 + 圆角 + 填充 + 内嵌 % 文字
+   - shore 6 色循环填充
+   - 220ms transform ease-out（motion-cut）
+   ========================================================================== */
+.categories__chart {
+  margin-top: 3rem;
+  /* chart 自身占据 viewport 全宽，不受外层 article 内容限宽 */
+  position: relative;
+  box-sizing: border-box;
+}
+.categories__chart > h2 {
+  margin: 0 0 1.5rem 0;
+  max-width: 768px;
+}
+.categories__bars {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 100%;
+}
+.categories__bar-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-inline: -1rem;
+  text-decoration: none;
+  color: rgb(var(--color-neutral-800));
+  position: relative;
+  transition: color 220ms var(--ease-out);
+  cursor: pointer;
+}
+.dark .categories__bar-link {
+  color: rgb(var(--color-neutral-100));
+}
+/* label 行 · 大写 mono，name 左、count 右 */
+.categories__bar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.categories__bar-name {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* pill track · 粗边框 + 圆角 */
+.categories__bar-track {
+  position: relative;
+  display: block;
+  height: 2.5rem;
+  background-color: transparent;
+  border: 2px solid rgb(var(--color-neutral-300));
+  border-radius: 999px;
+  overflow: hidden;
+  flex: 1 1 auto;
+}
+.dark .categories__bar-track {
+  border-color: rgb(var(--color-neutral-600));
+}
+/* fill · 基于扎染蓝的渐变（左深右浅 + 电光蓝偏移）· 默认暗 15%，hover 还原 */
+.categories__bar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--bar-pct, 0%);
+  background: linear-gradient(
+    90deg,
+    #08008E 0%,
+    #160DA7 50%,
+    #00B4D9 100%
+  );
+  border-radius: 999px;
+  transition: filter 800ms var(--ease-out), width 600ms var(--ease-out);
+  min-width: 0;
+}
+.dark .categories__bar-fill {
+  background: linear-gradient(
+    90deg,
+    #160DA7 0%,
+    #00B4D9 60%,
+    #9FD940 100%
+  );
+}
+.categories__bar-link:hover .categories__bar-fill {
+  /* 1 / 0.85 ≈ 1.176，hover 时还原到原色亮度 */
+  filter: brightness(1.18) saturate(1.25);
+}
+
+/* pill 内嵌 count 文字（白） */
+.categories__bar-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  padding-left: 0.875rem;
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  line-height: 1;
+}
+.dark .categories__bar:nth-child(6n) .categories__bar-count {
+  color: #1F1A2E;
+}
+
+/* label 行右 · 增减 delta */
+.categories__bar-delta {
+  font-family: var(--font-mono);
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+.categories__bar[data-delta^="-"] .categories__bar-delta {
+  color: #F04E8A;
+}
+.categories__bar:not([data-delta="0"]) .categories__bar-delta {
+  color: #0900A7;
+}
+.dark .categories__bar[data-delta="0"] .categories__bar-delta {
+  display: none;
+}
+.dark .categories__bar:not([data-delta="0"]) .categories__bar-delta {
+  color: rgb(var(--color-secondary-400));
+}
+
+.categories__bar-newdot {
+  display: inline-block;
+  position: relative;
+  width: 0.5rem;
+  height: 0.5rem;
+  vertical-align: 0.1em;
+  background-color: #F04E8A;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.categories__bar-newdot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background-color: #F04E8A;
+  opacity: 0.4;
+  animation: categories-newdot-pulse 2200ms ease-out infinite;
+}
+@keyframes categories-newdot-pulse {
+  0% { transform: scale(1); opacity: 0.4; }
+  70% { transform: scale(2.4); opacity: 0; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@media (max-width: 640px) {
+  .categories__bars {
+    gap: 1rem;
+  }
+  .categories__bar-track {
+    height: 2rem;
+  }
+  .categories__bar-count {
+    font-size: 0.6875rem;
+  }
+}
