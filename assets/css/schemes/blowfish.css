@@ -34,4 +34,8 @@
   --color-secondary-700: 14, 116, 144;
   --color-secondary-800: 21, 94, 117;
   --color-secondary-900: 22, 78, 99;
+  /* Fluorescent green · #B7FE4C · L=65% */
+  --color-accent-green: 183, 254, 76;
+  /* Cowlevel magenta · #FF00C8 · 蒸汽波撞色 */
+  --color-accent-magenta: 255, 0, 200;
 }

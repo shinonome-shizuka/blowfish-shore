@@ -1,0 +1,20 @@
+{{/* 文章页右栏 · 日期卡片 · 发布 + 最后修改 */}}
+<article class="aside-card aside-card--date">
+  <header class="aside-card__head">
+    <span class="aside-card__index">01</span>
+    <span class="aside-card__sep">/</span>
+    <span class="aside-card__label">日期</span>
+  </header>
+  <dl class="aside-card__body">
+    <div class="aside-card__row">
+      <dt>发布</dt>
+      <dd><time datetime="{{ .Date.Format "2006-01-02T15:04:05-07:00" }}">{{ .Date.Format "2006-01-02" }}</time></dd>
+    </div>
+    {{ if and (ne (.Date.Format "2006-01-02") (.Lastmod.Format "2006-01-02")) (gt (.Lastmod | time.Format "2006") 1) }}
+      <div class="aside-card__row">
+        <dt>更新</dt>
+        <dd><time datetime="{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" }}">{{ .Lastmod.Format "2006-01-02" }}</time></dd>
+      </div>
+    {{ end }}
+  </dl>
+</article>

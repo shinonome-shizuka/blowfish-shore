@@ -1,0 +1,254 @@
+/* ==========================================================================
+   Breathing Dot · 返回首页 link
+   ==========================================================================
+   两段文字（Home / 返回首页）共享同一坐标空间，互斥 opacity 切换。
+   容器宽度由「返回首页」撑开，避免切换时容器宽度跳变造成的跳动。
+   ========================================================================== */
+
+.breathing-dot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #F04E8A;
+  cursor: pointer;
+  border-radius: 999px;
+  transition:
+    background-color 240ms var(--ease-out),
+    color 240ms var(--ease-out),
+    padding 240ms var(--ease-out),
+    box-shadow 240ms var(--ease-out);
+}
+
+/* ----- 文字层容器：grid 让两个 span 重叠在同位置 ----- */
+.breathing-dot__label {
+  display: grid;
+  grid-template-areas: "stack";
+  align-items: center;
+}
+.breathing-dot__label > span {
+  grid-area: stack;
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+  white-space: nowrap;
+}
+
+/* Home 默认显示 */
+.breathing-dot__home {
+  color: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 返回首页默认隐藏 */
+.breathing-dot__back {
+  color: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+/* ----- 圆点：呼吸闪烁 ----- */
+.breathing-dot__pulse {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  background-color: currentColor; /* 跟随 wrapper color */
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: breathing-pulse 2s ease-in-out infinite;
+}
+
+/* ============================================================
+   hover / focus 状态
+   - HOME 上滑淡出
+   - 返回首页下滑淡入
+   - 容器变 pill：圆点缩小+背景填充+字色反白
+   - 容器宽度不变（由返回首页撑宽）→ 无跳动
+   ============================================================ */
+.breathing-dot:hover,
+.breathing-dot:focus-visible,
+.breathing-dot.is-hover {
+  padding: 0 12px;
+  background-color: #F04E8A;
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(240, 78, 138, 0.9);
+}
+/* ==========================================================================
+   Breathing Dot · 返回首页 link
+   ==========================================================================
+   两段文字（Home / 返回首页）共享同一坐标空间，互斥 opacity 切换。
+   容器宽度由「返回首页」撑开，避免切换时容器宽度跳变造成的跳动。
+   ========================================================================== */
+
+.breathing-dot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #F04E8A;
+  cursor: pointer;
+  border-radius: 999px;
+  transition:
+    background-color 240ms var(--ease-out),
+    color 240ms var(--ease-out),
+    padding 240ms var(--ease-out),
+    box-shadow 240ms var(--ease-out);
+}
+
+/* ----- 文字层容器：grid 让两个 span 重叠在同位置 ----- */
+.breathing-dot__label {
+  display: grid;
+  grid-template-areas: "stack";
+  align-items: center;
+}
+.breathing-dot__label > span {
+  grid-area: stack;
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+  white-space: nowrap;
+}
+
+/* Home 默认显示 */
+.breathing-dot__home {
+  color: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 返回首页默认隐藏 */
+.breathing-dot__back {
+  color: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+/* ----- 圆点：呼吸闪烁 ----- */
+.breathing-dot__pulse {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  background-color: currentColor; /* 跟随 wrapper color */
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: breathing-pulse 2s ease-in-out infinite;
+}
+
+/* ============================================================
+   hover / focus 状态
+   - HOME 上滑淡出
+   - 返回首页下滑淡入
+   - 容器变 pill：圆点缩小+背景填充+字色反白
+   - 容器宽度不变（由返回首页撑宽）→ 无跳动
+   ============================================================ */
+.breathing-dot:hover,
+.breathing-dot:focus-visible,
+.breathing-dot.is-hover {
+  padding: 0 12px;
+  background-color: #F04E8A;
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(240, 78, 138, 0.9);
+}
+.breathing-dot:hover .breathing-dot__pulse,
+.breathing-dot:focus-visible .breathing-dot__pulse,
+.breathing-dot.is-hover .breathing-dot__pulse {
+  width: 6px;
+  height: 6px;
+  animation: none; /* hover 时停止脉动 */
+}
+
+.breathing-dot:hover .breathing-dot__home,
+.breathing-dot:focus-visible .breathing-dot__home,
+.breathing-dot.is-hover .breathing-dot__home {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.breathing-dot:hover .breathing-dot__back,
+.breathing-dot:focus-visible .breathing-dot__back,
+.breathing-dot.is-hover .breathing-dot__back {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ----- 呼吸动画：box-shadow 周期性外扩 ----- */
+@keyframes breathing-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(240, 78, 138, 0.55); }
+  50%      { box-shadow: 0 0 0 6px rgba(240, 78, 138, 0); }
+}
+
+/* ----- 键盘焦点环 ----- */
+.breathing-dot:focus-visible {
+  outline: 2px solid #F04E8A;
+  outline-offset: 3px;
+}
+
+/* 暗色模式：cowlevel 玫红跨模式稳态，无需差异 */
+
+/* ==========================================================================
+   reduced-motion：用户偏好减少动效时，停呼吸灯、立即切换文本
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .breathing-dot__pulse { animation: none; }
+  .breathing-dot__label > span { transition: none; }
+}
+
+  animation: none; /* hover 时停止脉动 */
+}
+
+.breathing-dot:hover .breathing-dot__home,
+.breathing-dot:focus-visible .breathing-dot__home,
+.breathing-dot.is-hover .breathing-dot__home {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.breathing-dot:hover .breathing-dot__back,
+.breathing-dot:focus-visible .breathing-dot__back,
+.breathing-dot.is-hover .breathing-dot__back {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ----- 呼吸动画：box-shadow 周期性外扩 ----- */
+@keyframes breathing-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(240, 78, 138, 0.55); }
+  50%      { box-shadow: 0 0 0 6px rgba(240, 78, 138, 0); }
+}
+
+/* ----- 键盘焦点环 ----- */
+.breathing-dot:focus-visible {
+  outline: 2px solid #F04E8A;
+  outline-offset: 3px;
+}
+
+/* 暗色模式：cowlevel 玫红跨模式稳态，无需差异 */
+
+/* ==========================================================================
+   reduced-motion：用户偏好减少动效时，停呼吸灯、立即切换文本
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .breathing-dot__pulse { animation: none; }
+  .breathing-dot__label > span { transition: none; }
+}

@@ -6,18 +6,18 @@
 {{ $constrainItemsWidth := site.Params.list.constrainItemsWidth | default false }}
 {{ $disableImageOptimization := site.Store.Get "disableImageOptimization" }}
 
-{{ $cardClasses := "flex flex-col md:flex-row relative" }}
+{{ $cardClasses := "article-simple-grid relative" }}
 {{ $imgWrapperClasses := "" }}
 {{ $cardContentClasses := "" }}
 
 {{ if .Params.showCards | default site.Params.list.showCards }}
   {{ $cardClasses = printf "%s overflow-hidden rounded-lg border border-neutral-300 dark:border-neutral-600" $cardClasses }}
   {{ $imgWrapperClasses = "" }}
-  {{ $cardContentClasses = printf "%s p-4" $cardContentClasses }}
+  {{ $cardContentClasses = printf "%s p-4 article-simple-content" $cardContentClasses }}
 {{ else }}
   {{ $cardClasses = $cardClasses }}
   {{ $imgWrapperClasses = printf "%s thumbnail-shadow md:mr-7" $imgWrapperClasses }}
-  {{ $cardContentClasses = printf "%s mt-3 md:mt-0" $cardContentClasses }}
+  {{ $cardContentClasses = printf "%s mt-3 md:mt-0 article-simple-content" $cardContentClasses }}
 {{ end }}
 
 {{ if $constrainItemsWidth }}
@@ -90,15 +90,15 @@
     </div>
   {{ end }}
   <div class="{{ $cardContentClasses }}">
-    <header class="items-center text-start text-xl font-semibold">
+    <header class="flex items-center gap-2 text-xl font-semibold flex-wrap">
       <a
         {{ with $page.Params.externalUrl }}
           href="{{ . }}" target="_blank" rel="external"
         {{ else }}
           href="{{ $page.RelPermalink }}"
         {{ end }}
-        class="not-prose before:absolute before:inset-0 decoration-primary-500 dark:text-neutral text-xl font-bold text-neutral-800 hover:underline hover:underline-offset-2">
-        <h2>
+        class="not-prose before:absolute before:inset-0 decoration-primary-500 dark:text-neutral text-xl font-bold text-neutral-800 hover:underline hover:underline-offset-2 flex items-center">
+        <h2 class="m-0">
           {{ .Title | emojify }}
           {{ if .Params.externalUrl }}
             <span class="cursor-default align-top text-xs text-neutral-400 dark:text-neutral-500">
@@ -109,20 +109,41 @@
         </h2>
       </a>
       {{ if and .Draft .Site.Params.article.showDraftLabel }}
-        <div class="ms-2">{{ partial "badge.html" (i18n "article.draft" | emojify) }}</div>
+        <span class="ms-2 inline-flex items-center self-center rounded-md border border-primary-400 px-1.5 py-0.5 text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">{{ i18n "article.draft" | emojify }}</span>
       {{ end }}
       {{ if templates.Exists "partials/extend-article-link.html" }}
         {{ partial "extend-article-link.html" . }}
       {{ end }}
     </header>
-    <div class="text-sm text-neutral-500 dark:text-neutral-400">
-      {{ partial "article-meta/basic.html" . }}
-    </div>
+    {{/* 日期行 · 日期 + 反查 data/tags.yaml 的 group · 减淡 + 间隔 */}}
+    {{ if .Params.showDate | default (.Site.Params.article.showDate | default true) }}
+      <div class="mt-2 text-sm text-neutral-400 dark:text-neutral-500 flex flex-wrap items-center">
+        <span>{{- partial "meta/date.html" .Date -}}</span>
+        {{- range $i, $t := .Params.tags -}}
+          {{- if eq $i 0 -}}
+            {{- $row := index (where (default (slice) ($.Site.Data.tags | default (slice))) "slug" $t) 0 -}}
+            {{- with $row -}}{{ with .group -}}<span class="px-2 text-primary-500/70">/</span><span>{{- . -}}</span>{{- end }}{{ end -}}
+          {{- end -}}
+        {{- end -}}
+      </div>
+    {{ end }}
     {{ if .Params.showSummary | default (site.Params.list.showSummary | default false) }}
       <div class="article-link__summary prose dark:prose-invert max-w-fit mt-1 line-clamp-3">
         {{ .Summary | plainify }}
       </div>
     {{ end }}
+    {{/* 字数 + 阅读时长 · 底部 · 左侧字时，右侧 associated */}}
+    {{ $showWordCount := and (.Params.showWordCount | default (.Site.Params.article.showWordCount | default false)) (ne .WordCount 0) }}
+    {{ $showReadingTime := and (.Params.showReadingTime | default (.Site.Params.article.showReadingTime | default true)) (ne .ReadingTime 0) }}
+    {{ if or $showWordCount $showReadingTime ($page.Params.associated) }}
+      <div class="article-link--timeline__stats mt-auto pt-3 border-t border-neutral-200 dark:border-neutral-700 flex justify-between items-center text-sm text-neutral-500 dark:text-neutral-400">
+        <span class="inline-flex items-center">
+          {{- if $showWordCount }}{{ partial "meta/word-count.html" . }}{{ end -}}
+          {{- if and $showWordCount $showReadingTime }}<span class="article-link--timeline__sep" aria-hidden="true">/</span>{{ end -}}
+          {{- if $showReadingTime }}{{ partial "meta/reading-time.html" . }}{{ end -}}
+        </span>
+        {{- with $page.Params.associated }}<span class="text-xs text-neutral-400 dark:text-neutral-500">{{ . }}</span>{{ end -}}
+      </div>
+    {{ end }}
   </div>
-  <div class="px-6 pt-4 pb-2"></div>
 </article>

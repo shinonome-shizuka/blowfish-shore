@@ -37,6 +37,10 @@
         {{- partial "search.html" . -}}
       {{ end }}
     </div>
+    {{- if eq .Kind "page" -}}
+      <script src="/js/article-aside-links.js" defer></script>
+      <script src="/js/article-aside-comments.js" defer></script>
+    {{- end -}}
     {{- partial "grid-mist.html" . -}}
   </body>
 </html>

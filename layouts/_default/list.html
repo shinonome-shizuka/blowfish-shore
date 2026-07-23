@@ -54,6 +54,7 @@
     <!-- VIEW_DEBUG={{ $view }} -->
     {{/* view: timeline */}}
     {{ if eq $view "timeline" }}
+      {{ partial "sort-toggle.html" . }}
       <section class="article-timeline w-full">
         {{ if not $orderByWeight }}
           {{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}

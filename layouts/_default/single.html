@@ -18,19 +18,50 @@
       {{ if .Params.showBreadcrumbs | default (site.Params.article.showBreadcrumbs | default false) }}
         {{ partial "breadcrumbs.html" . }}
       {{ end }}
+      {{ with .Params.subtitle }}
+        {{ $cats := $.Params.categories | default (slice "默认") }}
+        {{ $cat := index $cats 0 }}
+        <p class="article-subtitle">
+          <span class="article-subtitle__icon" data-cat="{{ $cat }}" aria-hidden="true"></span>
+          <span class="article-subtitle__text">{{ . | emojify | markdownify }}</span>
+        </p>
+      {{ end }}
       <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
         {{ .Title | emojify }}
       </h1>
-      <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
-        {{ partial "article-meta/basic.html" (dict "context" . "scope" "single") }}
+      {{ $authorName := "" }}
+      {{ with .Params.authors }}{{ $authorName = index . 0 }}{{ end }}
+      {{ if not $authorName }}{{ $authorName = .Site.Params.Author.name }}{{ end }}
+      <div class="article-meta mt-3 mb-8 print:hidden">
+        {{ if and (.Params.showWordCount | default (.Site.Params.article.showWordCount | default false)) (ne .WordCount 0) }}
+          全文约 <span class="article-meta__value">{{ .WordCount }}</span> 字
+          {{ if (.Params.showReadingTime | default (.Site.Params.article.showReadingTime | default true)) }}
+            <span class="article-meta__sep">，</span>
+          {{ end }}
+        {{ end }}
+        {{ if and (.Params.showReadingTime | default (.Site.Params.article.showReadingTime | default true)) (ne .ReadingTime 0) }}
+          读完需要 <span class="article-meta__value">{{ .ReadingTime }}</span> 分钟
+        {{ end }}
+        <span class="article-byline">
+          文 / <span class="article-byline__name">{{ $authorName }}</span>
+        </span>
       </div>
-      {{ if not (.Params.showAuthorBottom | default (site.Params.article.showAuthorBottom | default false)) }}
-        {{ template "SingleAuthor" . }}
-      {{ end }}
     </header>
 
+    {{/* Callout · 题外话 · 单设段位，不嵌在 single_header 内 */}}
+    {{ with .Params.callout }}
+      <div class="article-callout-wrap max-w-prose print:hidden">
+        <details class="article-callout">
+          <summary class="article-callout__toggle">题外话</summary>
+          <div class="article-callout__body">
+            <p>{{ . | emojify | markdownify }}</p>
+          </div>
+        </details>
+      </div>
+    {{ end }}
+
     {{/* Body */}}
-    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+    <section class="article-layout flex flex-col max-w-[90rem] w-full mx-auto mt-0 lg:flex-row">
       {{ $enableToc := site.Params.article.showTableOfContents | default false }}
       {{ $enableToc = .Params.showTableOfContents | default $enableToc }}
       {{ $showToc := and $enableToc (in .TableOfContents "<ul") }}
@@ -44,9 +75,9 @@
       {{ end }}
 
 
-      <div class="min-w-0 min-h-0 max-w-fit">
+      <div class="min-w-0 min-h-0 flex-1 prose dark:prose-invert max-w-[65ch]">
         {{ partial "series/series.html" . }}
-        <div class="article-content max-w-prose mb-20">
+        <div class="article-content mb-20">
           {{ .Content }}
           {{ $defaultReplyByEmail := site.Params.replyByEmail }}
           {{ $replyByEmail := default $defaultReplyByEmail .Params.replyByEmail }}
@@ -69,13 +100,18 @@
             </strong>
           {{ end }}
         </div>
-        {{ if (.Params.showAuthorBottom | default (site.Params.article.showAuthorBottom | default false)) }}
-          {{ template "SingleAuthor" . }}
-        {{ end }}
         {{ partial "series/series-closed.html" . }}
         {{ partial "sharing-links.html" . }}
         {{ partial "related.html" . }}
       </div>
+
+      {{/* 右侧栏 · 日期 / tags / 关联 links */}}
+      <aside class="article-aside print:hidden" aria-label="文章元信息">
+        {{ partial "article-aside/date.html" . }}
+        {{ partial "article-aside/tags.html" . }}
+        {{ partial "article-aside/links.html" . }}
+        {{ partial "article-aside/comments.html" . }}
+      </aside>
     </section>
 
     {{/* Footer */}}
@@ -95,46 +131,4 @@
       {{ end }}
     </footer>
   </article>
-{{ end }}
-
-{{ define "SingleAuthor" }}
-  {{ $authorsData := hugo.Data.authors }}
-  {{ $taxonomies := site.Taxonomies.authors }}
-  {{ $baseURL := site.BaseURL }}
-  {{ $taxonomyLink := 0 }}
-  {{ $showAuthor := 0 }}
-  {{ $isAuthorBottom := (.Params.showAuthorBottom | default ( site.Params.article.showAuthorBottom | default false)) }}
-
-  {{ if not (strings.HasSuffix $baseURL "/") }}
-    {{ $baseURL = delimit (slice $baseURL "/") "" }}
-  {{ end }}
-
-  {{ if .Params.showAuthor | default (site.Params.article.showAuthor | default true) }}
-    {{ $showAuthor = 1 }}
-    {{ partial "author.html" . }}
-  {{ end }}
-
-  {{ range $author := .Page.Params.authors }}
-    {{ $authorData := index $authorsData $author }}
-    {{- if $authorData -}}
-      {{ range $taxonomyname, $taxonomy := $taxonomies }}
-        {{ if (eq $taxonomyname $author) }}
-          {{ $taxonomyLink = delimit (slice $baseURL "authors/" $author "/") "" }}
-        {{ end }}
-      {{ end }}
-
-      {{ $finalLink := $taxonomyLink }}
-      {{ $currentLang := site.Language.Name }}
-      {{ if eq site.LanguagePrefix "" }}
-        {{ $finalLink = printf "%sauthors/%s/" $baseURL $author }}
-      {{ else }}
-        {{ $finalLink = printf "%s%s/authors/%s/" $baseURL $currentLang $author }}
-      {{ end }}
-      {{ partial "author-extra.html" (dict "context" . "data" $authorData "link" $finalLink) }}
-    {{- end -}}
-  {{ end }}
-
-  {{ if or $taxonomyLink $showAuthor }}
-    <div class="{{ cond $isAuthorBottom "mb-10" "mb-5" }}"></div>
-  {{ end }}
 {{ end }}

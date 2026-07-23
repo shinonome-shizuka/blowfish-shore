@@ -1,7 +1,14 @@
-{{/* 呼吸灯小红点 - 仅在非首页显示 */}}
+{{/* 呼吸灯返回链接 · 仅在非首页显示
+   视觉：圆点 + 默认 Home 文字（呼吸闪烁）
+   hover：圆点缩小、Home 上滑淡出、「返回首页」下滑淡入
+   两段文字 grid 重叠在同位置 → 容器宽度不变 → 无跳动
+*/}}
 {{ if not .IsHome }}
-<a href="{{ "" | relLangURL }}" class="breathing-dot-wrapper" aria-label="返回首页">
-  <span class="breathing-dot"></span>
-  <span class="breathing-dot-tooltip">返回首页</span>
+<a href="{{ "" | relLangURL }}" class="breathing-dot" aria-label="返回首页">
+  <span class="breathing-dot__pulse" aria-hidden="true"></span>
+  <span class="breathing-dot__label">
+    <span class="breathing-dot__home">Home</span>
+    <span class="breathing-dot__back">返回首页</span>
+  </span>
 </a>
 {{ end }}

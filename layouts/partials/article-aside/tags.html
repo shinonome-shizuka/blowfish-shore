@@ -1,0 +1,15 @@
+{{/* 文章页右栏 · tags 卡片 */}}
+{{ with .Params.tags }}
+  <article class="aside-card aside-card--tags">
+    <header class="aside-card__head">
+      <span class="aside-card__index">02</span>
+      <span class="aside-card__sep">/</span>
+      <span class="aside-card__label">标签</span>
+    </header>
+    <ul class="aside-card__tags">
+      {{ range . }}
+        <li><a href="/tags/{{ . | urlize }}/" class="aside-tag">{{ . }}</a></li>
+      {{ end }}
+    </ul>
+  </article>
+{{ end }}
