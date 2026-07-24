@@ -1,0 +1,24 @@
+{{- $id := .Get "id" -}}
+{{- with $layout := .Get "layout" -}}
+<div class="embed video-player centered">
+{{- if eq $layout "small" -}}
+<iframe style="border: 0; width: 100%; height: 42px;"
+    src="https://bandcamp.com/EmbeddedPlayer/track={{ $id }}/size=small/bgcol=14191E/linkcol=005CFF/transparent=true/">
+</iframe>
+{{- else if eq $layout "large" -}}
+<iframe
+    style="border: 0; width: 100%; height: 120px;"
+    src="https://bandcamp.com/EmbeddedPlayer/track={{ $id }}/size=large/bgcol=14191E/linkcol=005CFF/tracklist=false/artwork=small/transparent=true/">
+</iframe>
+{{- else if eq $layout "card" -}}
+<iframe style="border: 0; width: 350px; height: 442px;"
+    src="https://bandcamp.com/EmbeddedPlayer/track={{ $id }}/size=large/bgcol=14191E/linkcol=005CFF/tracklist=false/transparent=true/">
+</iframe>
+{{- else if eq $layout "image" -}}
+<iframe
+    style="border: 0; width: 350px; height: 350px;"
+    src="https://bandcamp.com/EmbeddedPlayer/track={{ $id }}/size=large/bgcol=14191E/linkcol=005CFF/minimal=true/transparent=true/">
+</iframe>
+{{- end -}}
+</div>
+{{- end -}}

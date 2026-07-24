@@ -1,9 +1,138 @@
 {{ define "main" }}
-  <h1 class="mb-3 text-4xl font-extrabold">{{ i18n "error.404_title" | emojify }}</h1>
-  <p class="mt-8 mb-12 text-neutral-400 dark:text-neutral-500">
-    {{ i18n "error.404_error" | emojify }}
-  </p>
-  <div class="prose dark:prose-invert">
-    <p>{{ i18n "error.404_description" | emojify }}</p>
-  </div>
+  {{/* 404 · longbeach-shore override
+       长滩后院 · 蒸汽波孤本 · 不解释、不卖萌、不堆功能
+       Hallmark · macrostructure: Long Document · tone: atmospheric · anchor hue: indigo 268
+  */}}
+  <style>
+    /* Hallmark · macrostructure: Long Document · tone: atmospheric · anchor hue: indigo 268
+       · pre-emit critique: P5 H4 E5 S4 R5 V5 */
+    .page-404 {
+      max-width: 38rem;
+      margin: 4rem auto 0 auto;
+      padding: 0 1.5rem 6rem 1.5rem;
+      position: relative;
+    }
+    .page-404__eyebrow {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin: 0 0 1.5rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      color: rgb(var(--color-neutral-500));
+    }
+    .page-404__index {
+      color: rgb(var(--color-primary-500));
+      font-weight: 700;
+    }
+    .page-404__sep { opacity: 0.5; }
+    .page-404__caption {
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .page-404__title {
+      margin: 0 0 2rem 0;
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 3.75rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: rgb(var(--color-neutral-900));
+    }
+    .page-404__verse {
+      margin: 0 0 2.5rem 0;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: color-mix(in srgb, rgb(var(--color-neutral-500)) 56%, transparent);
+      font-style: normal;
+      max-width: 32rem;
+    }
+    .page-404__body {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgb(var(--color-neutral-700));
+      max-width: 32rem;
+      margin-bottom: 3rem;
+    }
+    .page-404__body p { margin: 0; }
+    .page-404__actions {
+      padding-top: 1.5rem;
+      border-top: 1px dashed rgba(0, 0, 0, 0.08);
+    }
+    .page-404__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: rgb(var(--color-primary-600));
+      text-decoration: none;
+      padding: 0.55rem 1.25rem;
+      border: 1px solid rgb(var(--color-primary-500));
+      border-radius: 999px;
+      transition:
+        background-color 180ms ease-out,
+        color 180ms ease-out,
+        transform 180ms ease-out,
+        box-shadow 180ms ease-out;
+    }
+    .page-404__cta:hover {
+      background-color: rgb(var(--color-primary-500));
+      color: rgb(var(--color-neutral));
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(var(--color-primary-500), 0.25);
+    }
+    .page-404__cta-arrow {
+      font-family: var(--font-mono);
+      transition: transform 200ms ease-out;
+    }
+    .page-404__cta:hover .page-404__cta-arrow {
+      transform: translateX(2px);
+    }
+    .dark .page-404__title { color: rgb(var(--color-neutral-100)); }
+    .dark .page-404__body { color: rgb(var(--color-neutral-300)); }
+    .dark .page-404__cta {
+      color: rgb(var(--color-secondary-300));
+      border-color: rgb(var(--color-secondary-300));
+    }
+    .dark .page-404__cta:hover {
+      background-color: rgb(var(--color-secondary-300));
+      color: rgb(var(--color-neutral-900));
+    }
+    .dark .page-404__actions { border-top-color: rgba(255, 255, 255, 0.08); }
+
+    /* 隐藏"回到顶部"按钮（404 单页短小，不需要） */
+    #scroll-to-top, #the-top { display: none !important; }
+  </style>
+
+  <article class="page-404">
+    <p class="page-404__eyebrow">
+      <span class="page-404__index">404</span>
+      <span class="page-404__sep">/</span>
+      <span class="page-404__caption">{{ i18n "error.404_error" | default "走丢了" }}</span>
+    </p>
+
+    <h1 class="page-404__title">{{ i18n "error.404_title" | default "此处空无一物" | emojify }}</h1>
+
+    <p class="page-404__verse">
+      来路已尽，去路未生。<br>
+      此页不在府上，亦不在心间。
+    </p>
+
+    <div class="page-404__body">
+      <p>{{ i18n "error.404_description" | default "你寻找的页面像一封未送达的信，也许从未写过，也许已被风取走。" | emojify | markdownify }}</p>
+    </div>
+
+    <div class="page-404__actions">
+      <a href="{{ "post/" | relLangURL }}" class="page-404__cta">
+        <span class="page-404__cta-label">去看文章</span>
+        <span class="page-404__cta-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </article>
 {{ end }}

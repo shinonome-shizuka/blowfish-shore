@@ -8,33 +8,73 @@
     {{ else }}
       {{ partial "hero/basic.html" . }}
     {{ end }}
-  {{- end -}}
+  {{- end }}
 
+  {{/* ========== entrance header · 与 /tags/ 总览页同呼吸 ========== */}}
+  {{ $taxonomyCap := "TAG" }}
+  {{ if eq (lower .Data.Plural) "categories" }}{{ $taxonomyCap = "CATEGORY" }}{{ end }}
+  {{ $articleCount := len .Pages }}
 
-  <header class="mt-5">
-    {{ if .Params.showBreadcrumbs | default (site.Params.term.showBreadcrumbs | default false) }}
-      {{ partial "breadcrumbs.html" . }}
+  {{/* 反查该 tag 在 data/tags.yaml 中的 group */}}
+  {{ $tagGroup := "" }}
+  {{ $tagSlug := .Data.Term }}
+  {{ range (default (slice) ($.Site.Data.tags | default (slice))) }}
+    {{ if and (not $tagGroup) (eq .slug $tagSlug) }}
+      {{ $tagGroup = .group }}
     {{ end }}
-    <h1 class="mt-5 text-4xl font-extrabold text-neutral-900 dark:text-neutral">{{ .Title }}</h1>
-    <div class="mt-1 mb-2 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
-      {{ partial "article-meta/term.html" (dict "context" . "scope" "single") }}
-    </div>
+  {{ end }}
+
+  <header class="entrance-hero__rail" aria-hidden="true">
+    <span class="entrance-hero__index">II</span>
+    <span class="entrance-hero__index-sep">/</span>
+    <span class="entrance-hero__index-cap">{{ $taxonomyCap }}</span>
   </header>
 
-  <section class="flex flex-col max-w-full mt-0 mb-5 prose dark:prose-invert lg:flex-row">
-    {{ if .Content }}
+  {{ if .Params.showBreadcrumbs | default (site.Params.term.showBreadcrumbs | default false) }}
+    {{ partial "breadcrumbs.html" . }}
+  {{ end }}
+
+  <div class="entrance-hero__title-row">
+    <h1 class="entrance-hero__title">{{ .Title }}</h1>
+  </div>
+
+  <div class="text-sm text-neutral-500 dark:text-neutral-400">
+    <div class="flex flex-row flex-wrap items-center">
+      <span>{{ $articleCount }} 篇文章</span>
+      {{ with $tagGroup }}<span class="px-2 text-primary-500">·</span><span>{{ . }}</span>{{ end }}
+    </div>
+    {{ with .Description }}<div class="mt-1 text-neutral-600 dark:text-neutral-500">{{ . | markdownify }}</div>{{ end }}
+  </div>
+
+  {{ if .Content }}
+    <section class="flex flex-col max-w-full mt-4 mb-5 prose dark:prose-invert lg:flex-row">
       <div class="min-w-0 min-h-0 max-w-prose">
         {{ .Content }}
       </div>
-    {{ end }}
-  </section>
+    </section>
+  {{ end }}
 
   {{ if gt .Pages 0 }}
     {{ $cardView := .Params.cardView | default (site.Params.term.cardView | default false) }}
     {{ $cardViewScreenWidth := site.Params.term.cardViewScreenWidth | default false }}
     {{ $groupByYear := .Params.groupByYear | default (site.Params.term.groupByYear | default false) }}
+    {{ $view := .Params.view | default (site.Params.term.view | default "default") }}
 
-    {{ if not $cardView }}
+    {{/* view: timeline */}}
+    {{ if eq $view "timeline" }}
+      <section class="article-timeline w-full">
+        {{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}
+          {{ if $groupByYear }}
+            <h2 class="article-timeline__year mt-8 text-2xl font-bold text-neutral-700 first:mt-8 dark:text-neutral-300" data-year="{{ .Key }}">
+              {{ .Key }}
+            </h2>
+          {{ end }}
+          {{ range .Pages }}
+            {{ partial "article-link/timeline.html" . }}
+          {{ end }}
+        {{ end }}
+      </section>
+    {{ else if not $cardView }}
 
       <section class="space-y-10 w-full">
         {{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}

@@ -1,0 +1,25 @@
+{{/* rss-episode shortcode
+   用法：{{< rss-episode src="..." title="..." height="202px" >}}
+*/}}
+{{ $src := .Get "src" }}
+{{ $title := .Get "title" | default "最新播客" }}
+{{ $height := .Get "height" | default "202px" }}
+{{ $fallback := .Get "fallback" | default $src }}
+
+<figure class="rss-episode-player" aria-label="{{ $title }}">
+  <div class="rss-episode-player__wrap">
+    <iframe
+      src="{{ $src }}"
+      width="100%"
+      height="{{ $height }}"
+      title="{{ $title }}"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      scrolling="no"
+      loading="lazy"
+    >
+      <a href="{{ $fallback }}" target="_blank" rel="external">{{ $title }}</a>
+    </iframe>
+  </div>
+</figure>

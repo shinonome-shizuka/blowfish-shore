@@ -1,0 +1,18 @@
+{{/*
+  longbeach-shore · extend-head.html
+  ────────────────────────────────────────────────
+  在站点 <head> 末尾注入主题级资源：
+    1. imagesLoaded（Masonry 前置依赖）
+    2. Masonry 错位瀑布流（DOMContentLoaded 后初始化）
+    3. 一言诗签 + ASCII noise 字符渐显动画（等字体 ready）
+  全部走 Hugo Pipes：minify + fingerprint + sha256 integrity。
+  ────────────────────────────────────────────────
+*/}}
+
+{{ $imagesLoaded := resources.Get "vendor/imagesloaded/imagesloaded.pkgd.min.js" | resources.Minify | resources.Fingerprint "sha256" }}
+{{ $masonry      := resources.Get "vendor/masonry/masonry.pkgd.min.js"       | resources.Minify | resources.Fingerprint "sha256" }}
+{{ $verse        := resources.Get "js/verse-reveal.js"                        | resources.Minify | resources.Fingerprint "sha256" }}
+
+<script src="{{ $imagesLoaded.RelPermalink }}" integrity="{{ $imagesLoaded.Data.Integrity }}" defer></script>
+<script src="{{ $masonry.RelPermalink }}"      integrity="{{ $masonry.Data.Integrity }}"      defer></script>
+<script src="{{ $verse.RelPermalink }}"        integrity="{{ $verse.Data.Integrity }}"        defer></script>

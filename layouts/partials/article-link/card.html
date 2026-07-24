@@ -15,11 +15,7 @@
   {{/* frontmatter */}}
   {{ with $page }}
     {{ $p := . }}
-    {{/* frontmatter · 优先 cover 字段 */}}
-    {{ $imageField := "" }}
-    {{ with .Params.cover }}{{ $imageField = . }}{{ end }}
-    {{ if not $imageField }}{{ with .Params.featureimage }}{{ $imageField = . }}{{ end }}{{ end }}
-    {{ with $imageField }}
+    {{ with (or .Params.featureimage .Params.cover) }}
       {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
         {{ if site.Params.hotlinkFeatureImage }}
           {{ $featuredURL = . }}
@@ -61,8 +57,8 @@
   {{ end }}
 {{ end }}
 
+{{ $title := or .Params.shortTitle .Title }}
 
-{{ $title := or $page.Params.shortTitle .Title }}
 <article
   class="article-link--card relative flex flex-col min-h-full min-w-full overflow-hidden rounded-lg border border-neutral-300 dark:border-neutral-600">
   {{ with $featuredURL }}
@@ -74,7 +70,8 @@
         decoding="async"
         class="not-prose absolute inset-0 w-full h-full object-cover">
       {{ with $page.Params.categories }}
-        <span class="entrance-cat-badge">{{ index . 0 }}</span>
+        {{ $cat := index . 0 }}
+        <span class="entrance-cat-badge" data-cat="{{ $cat }}">{{ $cat }}</span>
       {{ end }}
     </div>
   {{ end }}
@@ -91,7 +88,7 @@
         {{ else }}
           href="{{ $page.RelPermalink }}"
         {{ end }}
-        class="not-prose before:absolute before:inset-0 decoration-primary-500 dark:decoration-secondary-500 dark:text-neutral text-xl font-bold text-neutral-800 hover:underline hover:underline-offset-2">
+        class="not-prose before:absolute before:inset-0 decoration-primary-500 dark:text-neutral text-xl font-bold text-neutral-800 hover:underline hover:underline-offset-2">
         <h2>
           {{ $title | emojify }}
           {{ if .Params.externalUrl }}
@@ -104,7 +101,7 @@
       </a>
     </header>
     <div class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
-      {{ partial "meta/date.html" $page.Date }}
+      {{ partial "meta/date.html" .Date }}
     </div>
     {{ if .Params.showSummary | default (.Site.Params.list.showSummary | default false) }}
       <div class="article-link__summary prose dark:prose-invert mt-1 line-clamp-5 w-full max-w-none">
@@ -116,5 +113,25 @@
         <span class="entrance-assoc-badge">{{ . }}</span>
       </div>
     {{ end }}
+    <div class="entrance-card-meta">
+      <span class="entrance-card-meta__item">
+        <span class="entrance-card-meta__value">{{ .WordCount }}</span>
+        <span class="entrance-card-meta__label">字</span>
+      </span>
+      <span class="entrance-card-meta__sep">/</span>
+      <span class="entrance-card-meta__item">
+        <span class="entrance-card-meta__value">{{ .ReadingTime }}</span>
+        <span class="entrance-card-meta__label">分钟</span>
+      </span>
+      {{ with $page.Params.associate }}
+        {{ $aUrl := "" }}{{ $aLabel := "" }}
+        {{ if reflect.IsMap . }}
+          {{ $aUrl = .url }}{{ $aLabel = or .label .url }}
+        {{ else }}
+          {{ $aUrl = . }}{{ $aLabel = . }}
+        {{ end }}
+        <a href="{{ $aUrl }}" rel="noopener noreferrer" target="_blank" class="card-associate">{{ $aLabel }}</a>
+      {{ end }}
+    </div>
   </div>
 </article>

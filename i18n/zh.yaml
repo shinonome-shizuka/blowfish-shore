@@ -1,0 +1,34 @@
+global:
+  language: "简体中文"
+
+shortcode:
+  recent_articles: "最新文章"
+
+recent:
+  show_more: "更多"
+
+article:
+  date: "{{ .Date }}"
+  date_updated: "更新于：{{ .Date }}"
+  draft: "草稿"
+  edit_title: "编辑内容"
+  reading_time:
+    one: "{{ .Count }} 分钟"
+    other: "{{ .Count }} 分钟"
+  reading_time_title: "阅读时长"
+  word_count:
+    one: "{{ .Count }} 字"
+    other: "{{ .Count }} 字"
+  views:
+    one: "{{ .Count }} 次浏览"
+    other: "{{ .Count }} 次浏览"
+  likes:
+    one: "{{ .Count }} 赞"
+    other: "{{ .Count }} 赞"
+  this_article: "本文"
+  related_articles: "相关文章"
+
+footer:
+  # themeDisplayName 由站点 site.Params 提供；其他主题可在 config 改成自己名字。
+  # 站点不填时回退到 "Blowfish"。
+  powered_by: '由 {{ .Hugo }} 与 {{ .Theme }} 强力驱动'

@@ -1,0 +1,209 @@
+{{/*
+  longbeach-shore · tags/categories 总览
+  ────────────────────────────────────────────────
+  双视图：
+    1. CLOUD · 按文章数加权字号的快速标签云
+    2. TREES · 按 group 分桶，按 data/tags.yaml 的 parent 树展示父子层级
+  反向索引用 lower-case 匹配 slug（taxonomy key 是原文，url 是小写）
+  ────────────────────────────────────────────────
+*/}}
+{{ define "main" }}
+  {{/* ========== masthead ========== */}}
+  <article class="entrance-terms flex flex-col py-12">
+    {{ $taxonomyCap := "TAGS" }}
+    {{ if eq (lower .Data.Plural) "categories" }}{{ $taxonomyCap = "CATEGORIES" }}{{ end }}
+    <div class="entrance-hero__rail" aria-hidden="true">
+      <span class="entrance-hero__index">{{ if eq (lower .Data.Plural) "categories" }}III{{ else }}II{{ end }}</span>
+      <span class="entrance-hero__index-sep">/</span>
+      <span class="entrance-hero__index-cap">{{ $taxonomyCap }}</span>
+    </div>
+
+    <div class="entrance-hero__title-row">
+      <h1 class="entrance-hero__title">{{ if eq (lower .Data.Plural) "tags" }}枝繁而叶茂{{ else if eq (lower .Data.Plural) "categories" }}笔耕不辍，文墨不散{{ else }}{{ .Title }}{{ end }}</h1>
+    </div>
+
+    <div class="entrance-prose prose dark:prose-invert mt-6 max-w-3xl">
+      <p>
+      <blockquote>
+        {{ with .Description }}{{ . | markdownify }}{{ end }}
+        {{ if not .Description }}<span data-hitokoto>弃我去者，昨日之日不可留。</span>{{ end }}
+      </blockquote>
+      </p>
+    </div>
+
+    {{/* taxonomy 名（用于 URL 与 Site.Taxonomies key） */}}
+    {{ $taxonomyName := "" }}
+    {{ if eq .Kind "term" }}
+      {{ $taxonomyName = .Data.Plural }}
+    {{ else }}
+      {{ $taxonomyName = .Type }}
+    {{ end }}
+    {{ $taxonomyMap := index ($.Site.Taxonomies | default dict) $taxonomyName | default dict }}
+
+    {{/* 收集所有 term（term → pages） */}}
+    {{ $terms := slice }}
+    {{ range $term, $pages := $taxonomyMap }}
+      {{ $terms = $terms | append (dict "term" $term "count" (len $pages)) }}
+    {{ end }}
+    {{ $terms = sort $terms "count" "desc" }}
+
+    {{/* data/tags.yaml：扁平 list，每项 {slug, parent?, group?} */}}
+    {{ $tree := default (slice) ($.Site.Data.tags | default (slice)) }}
+
+    {{/* 反向索引（用 lowercase）: slug -> 它的子项列表 / slug -> 是否有 child */}}
+    {{ $children := dict }}
+    {{ $hasChildren := dict }}
+    {{ range $tree }}
+      {{ if .parent }}
+        {{ $pKey := lower .parent }}
+        {{ $existing := index $children $pKey | default (slice) }}
+        {{ $children = merge $children (dict $pKey ($existing | append .)) }}
+        {{ $hasChildren = merge $hasChildren (dict $pKey true) }}
+      {{ end }}
+    {{ end }}
+
+    {{/* ========== CATEGORIES 互动图表 · 仅 categories 路由走 ========== */}}
+    {{ if eq (lower .Data.Plural) "categories" }}
+      {{/* 读 history snapshot（由 GH Actions 在 build 前生成） */}}
+      {{ $history := default (dict) ($.Site.Data.category_history | default (dict)).snapshot }}
+      <section class="categories__chart mt-12">
+        <h2 class="entrance-hero__index-cap mb-6">DISTRIBUTION</h2>
+        {{ $maxCount := 0 }}
+        {{ range $terms }}{{ if gt .count $maxCount }}{{ $maxCount = .count }}{{ end }}{{ end }}
+        <ol class="categories__bars">
+          {{ range $terms }}
+            {{/* diff vs 上次 snapshot */}}
+            {{ $prev := index $history .term | default 0 }}
+            {{ $delta := sub .count $prev }}
+            {{ $pct := 0 }}
+            {{ if gt $maxCount 0 }}{{ $pct = div (mul .count 100) $maxCount }}{{ end }}
+            <li class="categories__bar" data-count="{{ .count }}" data-delta="{{ $delta }}" style="--bar-pct: {{ $pct }}%;">
+              <a href="{{ (printf "/%s/%s/" $taxonomyName (urlize .term)) | relLangURL }}" class="categories__bar-link">
+                <div class="categories__bar-label">
+                  <span class="categories__bar-name">{{ .term }}{{ if gt $delta 0 }}<span class="categories__bar-newdot" aria-label="最近新增"></span>{{ end }}</span>
+                  <span class="categories__bar-delta">{{ if gt $delta 0 }}+{{ $delta }}{{ else if lt $delta 0 }}-{{ sub 0 $delta }}{{ end }}</span>
+                </div>
+                <span class="categories__bar-track">
+                  <span class="categories__bar-fill" style="width: {{ $pct }}%;">
+                    <span class="categories__bar-count">{{ .count }}</span>
+                  </span>
+                </span>
+              </a>
+            </li>
+          {{ end }}
+        </ol>
+      </section>
+    {{ else }}
+
+    {{/* ========== CLOUD：去掉父节点（被引用为 parent 的顶级 tag），保留独立顶级 ========== */}}
+    <section class="terms__top mt-12">
+      <h2 class="entrance-hero__index-cap mb-6">CLOUD</h2>
+      <ul class="terms__cloud">
+        {{ range $terms }}
+          {{ if not (index $hasChildren (lower .term)) }}
+            <li class="terms__chip" data-count="{{ .count }}">
+              <a href="{{ (printf "/%s/%s/" $taxonomyName (urlize .term)) | relLangURL }}"
+                 class="terms__chip-link"
+                 style="font-size: {{ math.Max 14 (math.Min 36 (add 14 (div (mul .count 4) 3))) }}px;">
+                {{ .term }}
+                <span class="terms__chip-count">{{ .count }}</span>
+              </a>
+            </li>
+          {{ end }}
+        {{ end }}
+      </ul>
+    </section>
+
+    {{ end }}
+
+    {{/* ========== TREES：按 group 分桶，每桶列出根级 slug + 它带 children 的子项 · categories 不渲染 ========== */}}
+    {{ if and $tree (ne (lower .Data.Plural) "categories") }}
+      <section class="terms__trees mt-16">
+        <h2 class="entrance-hero__index-cap mb-6">HIERARCHY</h2>
+
+        {{/* 取所有 group（保序） */}}
+        {{ $groups := slice }}
+        {{ range $tree }}{{ if .group }}{{ $groups = $groups | append .group }}{{ end }}{{ end }}
+        {{ $groups = $groups | uniq }}
+
+        {{/* 未分组的项归为「其他」 */}}
+        {{ $hasGrouped := dict }}
+        {{ range $tree }}{{ if .group }}{{ $hasGrouped = merge $hasGrouped (dict .slug true) }}{{ end }}{{ end }}
+        {{ $others := slice }}
+        {{ range $tree }}
+          {{ if and (not .group) (not (index $hasGrouped .slug)) }}
+            {{ $others = $others | append . }}
+          {{ end }}
+        {{ end }}
+
+        {{ $renderGroup := slice }}
+        {{ range $groups }}{{ $renderGroup = $renderGroup | append . }}{{ end }}
+        {{ if $others }}{{ $renderGroup = $renderGroup | append "其他" }}{{ end }}
+
+        {{ range $gIdx, $g := $renderGroup }}
+          {{ $groupNodes := where $tree "group" $g }}
+          {{/* 只渲染该 group 下的顶级 tag（无 parent 的） */}}
+          {{ $nodes := where $groupNodes "parent" nil }}
+          {{ if eq $g "其他" }}{{ $nodes = $others }}{{ end }}
+          <details class="terms__group" open data-group-index="{{ add $gIdx 1 }}">
+            <summary class="terms__group-header">
+              <span class="terms__group-index" aria-hidden="true">{{ printf "%02d" (add $gIdx 1) }}</span>
+              <span class="terms__group-name">{{ $g }}</span>
+              <span class="terms__group-count">
+                {{ $count := 0 }}{{ range $nodes }}{{ $count = add $count 1 }}{{ end }}
+                {{ $count }} 项
+              </span>
+            </summary>
+            <ul class="terms__cloud terms__tree-list">
+              {{ range $node := $nodes }}
+                {{- $level1Kids := index $children (lower $node.slug) | default (slice) -}}
+                {{- $nodeSlug := urlize $node.slug -}}
+                {{- $termCount := (index (where $terms "term" $node.slug) 0).count | default 0 -}}
+                <li class="terms__tree-item">
+                  <a href="{{ (printf "/%s/%s/" $taxonomyName $nodeSlug) | relLangURL }}"
+                     class="terms__chip-link">
+                    {{ $node.slug }}
+                    <span class="terms__chip-count">{{ $termCount }}</span>
+                  </a>
+
+                  {{ if $level1Kids }}
+                    <ul class="terms__cloud terms__cloud--nested terms__children">
+                      {{ range $child := $level1Kids }}
+                        {{- $cSlug := urlize $child.slug -}}
+                        {{- $cCount := (index (where $terms "term" $child.slug) 0).count | default 0 -}}
+                        {{- $cL2Kids := index $children (lower $child.slug) | default (slice) -}}
+                        <li class="terms__tree-item">
+                          <a href="{{ (printf "/%s/%s/" $taxonomyName $cSlug) | relLangURL }}"
+                             class="terms__chip-link">
+                            {{ $child.slug }}
+                            <span class="terms__chip-count">{{ $cCount }}</span>
+                          </a>
+
+                          {{ if $cL2Kids }}
+                            <ul class="terms__cloud terms__cloud--nested terms__children--l2">
+                              {{ range $grand := $cL2Kids }}
+                                {{- $gSlug := urlize $grand.slug -}}
+                                {{- $gCount := (index (where $terms "term" $grand.slug) 0).count | default 0 -}}
+                                <li class="terms__tree-item">
+                                  <a href="{{ (printf "/%s/%s/" $taxonomyName $gSlug) | relLangURL }}"
+                                     class="terms__chip-link">
+                                    {{ $grand.slug }}
+                                    <span class="terms__chip-count">{{ $gCount }}</span>
+                                  </a>
+                                </li>
+                              {{ end }}
+                            </ul>
+                          {{ end }}
+                        </li>
+                      {{ end }}
+                    </ul>
+                  {{ end }}
+                </li>
+              {{ end }}
+            </ul>
+          </details>
+        {{ end }}
+      </section>
+    {{ end }}
+  </article>
+{{ end }}

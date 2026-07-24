@@ -1,179 +1,78 @@
-English | [Français](https://github.com/nunocoracao/blowfish/blob/main/README.fr.md) | [Deutsch](https://github.com/nunocoracao/blowfish/blob/main/README.de.md) | [Português (PT)](https://github.com/nunocoracao/blowfish/blob/main/README.pt-pt.md) | [Português (BR)](https://github.com/nunocoracao/blowfish/blob/main/README.pt-br.md) | [Español](https://github.com/nunocoracao/blowfish/blob/main/README.es.md) | [日本語](https://github.com/nunocoracao/blowfish/blob/main/README.ja.md) | [简体中文](https://github.com/nunocoracao/blowfish/blob/main/README.zh-cn.md) | [Indonesian](https://github.com/nunocoracao/blowfish/blob/main/README.id.md)
-# Blowfish
-[![Netlify Status](https://api.netlify.com/api/v1/badges/6e5256d4-3148-4d69-879c-310341020fe9/deploy-status)](https://app.netlify.com/sites/snazzy-dango-efb2ec/deploys)
-[![Minimum Hugo Version](https://img.shields.io/static/v1?label=min-HUGO-version&message=0.158.0&color=blue&logo=hugo)](https://github.com/gohugoio/hugo/releases/tag/v0.158.0)
-[![GitHub](https://img.shields.io/github/license/nunocoracao/blowfish)](https://github.com/nunocoracao/blowfish/blob/main/LICENSE)
-[![Blowfish](https://img.shields.io/badge/Hugo--Themes-@Blowfish-blue)](https://themes.gohugo.io/themes/blowfish/)
-![code-size](https://img.shields.io/github/languages/code-size/nunocoracao/blowfish)
+# blowfish-shore
 
-Blowfish is designed to be a powerful, lightweight theme for [Hugo](https://gohugo.io). It's built using Tailwind CSS with a clean and minimalist design that prioritises to your content.
+`长滩后院` 自定义版 · 基于 [Blowfish](https://github.com/nunocoracao/blowfish) v2.104+，主题上游保持同步追踪。
 
-![blowfish screenshot](https://github.com/nunocoracao/blowfish/blob/main/images/screenshot.png?raw=true)
+## 主题 fork 在做什么
 
+- 在 stock Blowfish 基础上叠加中文 typography / 蒸汽波背景 / DotField 雾气 / ASCII noise 诗签。
+- 5 个全新 shortcode：`bandcamp` / `music163` / `strava` / `friendlink` / `rss-episode`。
+- 主列表/分类视图的 `view: timeline` 变体（站点级 frontmatter 切换）。
+- `taxonomy/terms.html` 三视图：`CLOUD`（字号加权）+ `HIERARCHY`（父子层级）+ `DISTRIBUTION`（数量对比上次 build）。
+- `params.themeDisplayName` 通用化（替代上游硬编码 `Blowfish` 字面量）。
+- 中文调色板 `schemes/shore.css`（扎染蓝 #0900A7 / 电光蓝 #00D4FF / 荧光绿提示）。
+- 中文 webfont（Noto Sans SC + Source Han Serif SC + Hack Mono）静态嵌入。
 
-🌏 [Demo site](https://blowfish.page/)  
-📑 [Theme documentation](https://blowfish.page/docs/)  
-💎 [Merch Store](http://tee.pub/lic/qwSlWVBL5zc)  
-🐛 [Bug reports & issues](https://github.com/nunocoracao/blowfish/issues)  
-💡 [Questions & feature requests](https://github.com/nunocoracao/blowfish/discussions)
+## 不属于这个 fork
 
+- 文章内容 / frontmatter —— 留主仓库。
+- 站点身份（avatar / socials / 友链）—— 留主仓库。
+- 部署 / CI —— 留主仓库 `.github/workflows/hugo.yml`。
 
+## 与上游同步
 
-<a href="https://www.buymeacoffee.com/nunocoracao" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-<a target="_blank" href="http://tee.pub/lic/qwSlWVBL5zc"><img class="nozoom" src="https://img.buymeacoffee.com/button-api/?text=Merch Store &emoji=💎&slug=nunocoracao&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" /></a>
-
-
-
-## Features
-
-- Fully responsive layout built with Tailwind CSS 3.0
-- Multiple colour schemes (or fully customise your own)
-- Dark mode (forced on/off or auto-switching with user toggle)
-- Highly customisable configuration
-- Firebase integration to support dynamic data
-- Views count & like mechanism
-- Related articles
-- Multiple homepage layouts
-- Multiple authors
-- Series of articles
-- Date and weight based article sorting
-- Zen mode for article reading
-- Flexible with any content types, taxonomies and menus
-- Header and footer menus
-- Nested menus & sub-navigation menu
-- Scrollable table of contents
-- Multilingual content support including support for RTL languages
-- Ability to link to posts on third-party websites
-- Support for several shortcodes like Gallery, Timeline, GitHub cards, and Carousels
-- GitHub Alerts syntax, 15 types, collapsible support
-- Buymeacoffee integration
-- Client-side site search powered by Fuse.js
-- Diagrams and visualisations using Mermaid
-- Charts using Chart.js
-- TypeIt integration
-- Youtube embeds with performance improvements
-- Mathematical notation using KaTeX
-- SVG icons from FontAwesome 6
-- Automatic image resizing using Hugo Pipes
-- Heading anchors, Tables of Contents, Code copy, Buttons, Badges and more
-- HTML and Emoji support in articles 🎉
-- SEO friendly with links for sharing to social media
-- Fathom Analytics and Google Analytics support
-- RSS feeds, Favicons and comments support
-- Advanced customisation using simple Tailwind colour definitions and styles
-- Optimised for performance and accessibility with perfect Lighthouse scores
-- Fully documented with regular updates
-
----
-
-![blowfish logo](https://github.com/nunocoracao/blowfish/blob/main/logo.png?raw=true)
-
-## Documentation
-
-Blowfish has [extensive documentation](https://blowfish.page/docs/) that covers all aspects of the theme. Be sure to [read the docs](https://blowfish.page/docs/) to learn more about how to use the theme and its features.
-
----
-
-## Installation
-
-Blowfish supports several installation methods - as a git submodule, a Hugo Module, or as a completely manual install.
-
-Detailed instructions for each method can be found in the [Installation](https://blowfish.page/docs/installation) docs. You should consult the documentation for the simplest setup experience. Below is a quick start guide using submodules if you are using git, or Hugo modules if you're already confident installing Hugo themes.
-
-### Quick start using Blowfish Tools
-
-> **Note:** Ensure you have **Node.js**, **Git** and **Hugo** installed, and that you have created a new Hugo project before proceeding.
-
-We just launched a new CLI tool to help you get started with Blowfish. It will create a new Hugo project, install the theme and set up the theme configuration files for you. It's still in beta so please [report any issues you find](https://github.com/nunocoracao/blowfish-tools).
-
-Install the CLI tool globally using npm (or other package manager):
-```shell
-npm i -g blowfish-tools
+```bash
+git remote add upstream https://github.com/nunocoracao/blowfish.git
+git fetch upstream
+git rebase upstream/main
+# 解决冲突时关注：
+#   layouts/partials/article-link/{card,timeline}.html
+#   layouts/partials/extend-head.html
+#   layouts/partials/footer.html  (含 themeDisplayName 替换)
+#   assets/css/custom.css         (1987 行本地版)
+#   layout 0f: i18n/zh.yaml
 ```
 
-Then run the command `blowfish-tools` to start an interactive run which will guide you through creation and configuration use-cases.
-```shell
-blowfish-tools
+rebase 后跑 `hugo --templateMetrics --minify` 与 `hugo --printPathWarnings` 验证。
+
+## 设计 token 与类命名
+
+`assets/css/custom.css` 是 1987 行主体；BEM 命名空间：
+
+- `entrance-hero__*` 首页 hero 区块
+- `entrance-recent*` / `entrance-card-meta*` 列表卡片
+- `entrance-podcast__*` 首页播客卡
+- `entrance-cat-badge` / `card-associate` 关联与分类小标识
+- `article-link--timeline__*` 时间轴列表项
+- `terms__chip*` / `terms__group*` / `terms__tree*` / `categories__bar*` / `terms__cloud*` taxonomy 三视图
+
+`assets/css/components/*.css` 拆分了小粒度组件：`breathing-dot`、`terms`、`a11y`、`card`、`tabs`、`gallery`、`admonition`、`carousel`。
+
+**修改前**先看 `docs/CSS_REFACTOR_PLAN.md`（主仓库 `docs/`，写的是拆分路线图）。
+
+## 主题用法
+
+被主仓库以 git submodule 引用：
+
+```
+[submodule "themes/blowfish-shore"]
+  path = themes/blowfish-shore
+  url  = https://github.com/shinonome-shizuka/blowfish-shore.git
 ```
 
-You can also run the command `blowfish-tools new` to create a new Hugo project and install the theme in one go. Check the CLI help for more information.
-```shell
-blowfish-tools new mynewsite
-```
+主仓库 `config.toml` 设 `theme = 'blowfish-shore'` + `params.themeDisplayName = 'Blowfish Shore'`。其他主题可换：直接改 `theme = '...'` 即可。
 
-### Quick start using git submodules
+## 配套文档
 
-> **Note:** Ensure you have **Git** and **Hugo** installed, and that you have created a new Hugo project before proceeding.
+| 文件 | 写什么 |
+|------|-------|
+| 主仓库 `docs/STRUCTURE.md` | 抽取后仓库目录树 |
+| 主仓库 `docs/MIGRATION.md` | 抽取步骤日志 |
+| 主仓库 `docs/PORTABILITY.md` | "换 theme" 配方 |
+| 主仓库 `docs/HUGO_STANDARDS.md` | Hugo v0.158+ 规范对账 |
+| 主仓库 `docs/REACT_VS_HUGO.md` | 是否引 React 的评估（结论：不引） |
+| 主仓库 `docs/TAGS_SCHEMA.md` | `data/tags.yaml` schema |
+| 主仓库 `docs/CONTENT_GUIDE.md` | 作者侧 frontmatter 写作规范 |
 
-1. From your project directory, initialise git:
+## License
 
-   ```shell
-   git init
-   ```
-
-2. Configure Blowfish as a git submodule:
-
-   ```shell
-   git submodule add -b main https://github.com/nunocoracao/blowfish.git themes/blowfish
-   ```
-
-3. In the root folder of your website, delete the `hugo.toml` file that was generated by Hugo. Copy the `*.toml` config files from the theme into your `config/_default/` folder.
-
-   You will find these theme config files in the Hugo cache directory, or [download a copy](https://github.com/nunocoracao/blowfish/releases/latest/download/config-default.zip) from GitHub.
-
-4. Follow the [Getting Started](https://blowfish.page/docs/getting-started/) instructions to configure your website.
-
-### Quick start using Hugo
-
-> **Note:** Ensure you have **Go** and **Hugo** installed, and that you have created a new Hugo project before proceeding.
-
-1. From your project directory, initialise Hugo Modules:
-
-   ```shell
-   hugo mod init github.com/<username>/<repo-name>
-   ```
-
-2. Create `config/_default/module.toml` and add the following:
-
-   ```toml
-   [[imports]]
-   path = "github.com/nunocoracao/blowfish/v2"
-   ```
-
-3. Start your server using `hugo server` and the theme will be downloaded automatically.
-
-4. In the root folder of your website, delete the `hugo.toml` file that was generated by Hugo. Copy the `*.toml` config files from the theme into your `config/_default/` folder.
-
-   > **Note:** Do not overwrite the `module.toml` file you created above!
-   
-   You will find these theme config files in the Hugo cache directory, or [download a copy](https://github.com/nunocoracao/blowfish/releases/latest/download/config-default.zip) from GitHub.
-
-5. Follow the [Getting Started](https://blowfish.page/docs/getting-started/) instructions to configure your website.
-
-### Installing theme updates
-
-As new releases are posted, you can update the theme using Hugo. Simply run `hugo mod get -u` from your project directory and the theme will automatically update to the latest release.
-
-Detailed [update instructions](https://blowfish.page/docs/installation/#installing-updates) are available in the docs.
-
----
-
-## Contributing
-
-Blowfish is expected to evolve over time. I intend to keep adding features and making changes as required.
-
-Feel free to get in touch with any issues or suggestions for new features you'd like to see.
-
-- 🐛 **Bug reports & issues:** Use [GitHub Issues](https://github.com/nunocoracao/blowfish/issues)
-- 💡 **Ideas for new features:** Open a discussion on [GitHub Discussions](https://github.com/nunocoracao/blowfish/discussions)
-- 🙋‍♀️ **General questions:** Head to [GitHub Discussions](https://github.com/nunocoracao/blowfish/discussions)
-
-If you're able to fix a bug or implement a new feature, I welcome PRs for this purpose. Learn more in the [contributing guidelines](https://github.com/nunocoracao/blowfish/blob/main/CONTRIBUTING.md).
-
----
-
-## Stargazers over time
-
-[![Stargazers over time](https://starchart.cc/nunocoracao/blowfish.svg)](https://starchart.cc/nunocoracao/blowfish)
-
-<a rel="me" href="https://masto.ai/@blowfish">Mastodon</a>
+继承 Blowfish 上游的 MIT License。贡献者见 `CODE_OF_CONDUCT.md`。

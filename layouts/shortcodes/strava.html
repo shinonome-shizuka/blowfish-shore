@@ -1,0 +1,8 @@
+{{- $id := .Get "id" -}}
+{{- $token := .Get "token" -}}
+{{- with $type := .Get "type" -}}
+<div class="centered">
+    <iframe height='183' width=100% frameborder='0' allowtransparency='true' scrolling='no'
+        src='https://www.strava.com/athletes/{{ $id }}/{{ $type }}/{{ $token }}'></iframe>
+</div>
+{{- end -}}

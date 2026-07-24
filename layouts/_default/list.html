@@ -1,3 +1,6 @@
+{{/* 项目级 list.html 覆盖主题版本
+   新增 `view: timeline` 选项，按时间轴样式渲染列表。
+   默认 simple（向下兼容主题原行为） */}}
 {{ define "main" }}
   {{ .Scratch.Set "scope" "list" }}
   {{ $enableToc := .Params.showTableOfContents | default (site.Params.list.showTableOfContents | default false) }}
@@ -51,15 +54,21 @@
     {{ $view := .Params.view | default (site.Params.list.view | default "default") }}
     {{ $groupByYear := and (not $orderByWeight) $groupByYear }}
 
-    <!-- VIEW_DEBUG={{ $view }} -->
+    {{/* DEBUG */}}
+    <div style="display:none" data-debug="list-view">{{ $view }}</div>
+
     {{/* view: timeline */}}
     {{ if eq $view "timeline" }}
-      {{ partial "sort-toggle.html" . }}
+      {{/*
+        ponytail: 排序切换器 sort-toggle 已下线（2026-07-22）
+          服务端方案需要 querystring 函数 + 适配所有 view，不值得为单 view 折腾。
+          重排需求存于此，留给后续用 taxonomy / hugo-query 重新设计再说。
+      */}}
       <section class="article-timeline w-full">
         {{ if not $orderByWeight }}
           {{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}
             {{ if $groupByYear }}
-              <h2 class="article-timeline__year mt-12 text-2xl font-bold text-neutral-700 first:mt-8 dark:text-neutral-300">
+              <h2 class="article-timeline__year mt-8 text-2xl font-bold text-neutral-700 first:mt-8 dark:text-neutral-300" data-year="{{ .Key }}">
                 {{ .Key }}
               </h2>
             {{ end }}
@@ -73,6 +82,8 @@
           {{ end }}
         {{ end }}
       </section>
+
+    {{/* view: default + not cardView */}}
     {{ else if not $cardView }}
       <section class="space-y-10 w-full">
         {{ if not $orderByWeight }}
@@ -92,7 +103,8 @@
           {{ end }}
         {{ end }}
       </section>
-    {{/* else: is cardView */}}
+
+    {{/* view: default + cardView */}}
     {{ else }}
       {{ if $groupByYear }}
         {{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}
@@ -118,8 +130,6 @@
             </section>
           {{ end }}
         {{ end }}
-
-      {{/* else: not groupByYear */}}
       {{ else }}
         {{ if $cardViewScreenWidth }}
           <div class="relative w-screen max-w-[1600px] px-[30px] start-[calc(max(-50vw,-800px)+50%)]">
@@ -151,10 +161,9 @@
               {{ end }}
             {{ end }}
           </section>
-        {{ end }}{{/* End of cardViewScreenWidth */}}
-      {{ end }}{{/* End of groupByYear */}}
-    {{ end }}{{/* End of cardView */}}
-  {{/* else: .Pages not greater to zero */}}
+        {{ end }}
+      {{ end }}
+    {{ end }}
   {{ else }}
     <section class="mt-10 prose dark:prose-invert">
       <p class="py-8 border-t">
